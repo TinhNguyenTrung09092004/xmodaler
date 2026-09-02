@@ -7,7 +7,7 @@ In X-modaler, the following interfaces are supported:
 * Functions and classes that have well-defined explicit arguments, which requires users’ expertise to understand what each argument should be.
 * A few functions and classes are implemented with the **@configurable** decorator - they can be called with either a config, or with explicit arguments.
 
-As an example, a UpDown model can be built in the following ways:
+As an example, a COS-Net model can be built in the following ways:
 ```
 cfg = ... # read the config
 model = build_model(cfg) # users only need to pass a config

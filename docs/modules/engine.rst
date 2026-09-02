@@ -103,16 +103,8 @@ xmodaler.engine
    :private-members:
    :undoc-members:
    :show-inheritance:
-   
-.. autoclass:: xmodaler.engine.RLTrainer
-   :members:
-   :special-members: __init__
-   :inherited-members:
-   :private-members:
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.engine.RLBeamTrainer
+
+.. autoclass:: xmodaler.engine.RLMeanTrainer
    :members:
    :special-members: __init__
    :inherited-members:

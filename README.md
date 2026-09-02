@@ -1,7 +1,7 @@
-# X-modaler
-This is an **image-captioning-only** distribution of [X-modaler](https://xmodaler.readthedocs.io/en/latest/), a versatile and high-performance codebase for cross-modal analytics. All modules unrelated to image captioning (video captioning, vision-language pre-training, visual question answering, visual commonsense reasoning and cross-modal retrieval) have been removed.
+# X-modaler (COS-Net only)
+This is a **COS-Net-only** distribution of [X-modaler](https://xmodaler.readthedocs.io/en/latest/), a versatile and high-performance codebase for cross-modal analytics. Everything unrelated to image captioning (video captioning, vision-language pre-training, visual question answering, visual commonsense reasoning and cross-modal retrieval) and every image-captioning model other than COS-Net (Attention, LSTM-A3, Up-Down, GCN-LSTM, Transformer, Meshed-Memory, X-LAN, TDEN, SCD-Net) have been removed.
 
-The original paper can be found [here](https://arxiv.org/pdf/2108.08217.pdf).
+The original X-modaler paper can be found [here](https://arxiv.org/pdf/2108.08217.pdf).
 
 <p align="center">
   <img src="images/task.jpg" width="800"/>
@@ -18,107 +18,39 @@ See [installation instructions](https://xmodaler.readthedocs.io/en/latest/tutori
 * jsonlines
 * pycocotools
 
-## Getting Started 
+## Getting Started
 See [Getting Started with X-modaler](https://xmodaler.readthedocs.io/en/latest/tutorials/getting_started.html)
 
 ### Training & Evaluation in Command Line
 
-We provide a script in "train_net.py", that is made to train all the configs provided in X-modaler. You may want to use it as a reference to write your own training script.
+We provide a script in "train_net.py" to train the COS-Net configs provided here. You may want to use it as a reference to write your own training script.
 
-To train a model(e.g., UpDown) with "train_net.py", first setup the corresponding datasets following [datasets](xmodaler/datasets/README.md), then run:
+First setup the datasets following [datasets](xmodaler/datasets/README.md) and the COS-Net [data preparation](configs/image_caption/cosnet/README.md), then run:
 ```
 # Teacher Force
 python train_net.py --num-gpus 4 \
- 	--config-file configs/image_caption/updown/updown.yaml
+ 	--config-file configs/image_caption/cosnet/cosnet.yaml
 
 # Reinforcement Learning
 python train_net.py --num-gpus 4 \
- 	--config-file configs/image_caption/updown/updown_rl.yaml
+ 	--config-file configs/image_caption/cosnet/cosnet_rl.yaml
 ```
 
 ## Model Zoo and Baselines
-A large set of baseline results and trained models are available [here](https://xmodaler.readthedocs.io/en/latest/notes/benchmarks.html).
 
 <table>
   <tr>
     <td colspan="4" align="center"><font size=3><b>Image Captioning</b></font></td>
   </tr>
   <tr>
-    <td>Attention</td>
-    <td> Show, attend and tell: Neural image caption generation with visual attention </td>
-    <td>ICML</td>
-    <td>2015</td>
-  </tr>
-  <tr>
-    <td>LSTM-A3</td>
-    <td> Boosting image captioning with attributes </td>
-    <td>ICCV</td>
-    <td>2017</td>
-  </tr>
-  <tr>
-    <td>Up-Down</td>
-    <td> Bottom-up and top-down attention for image captioning and visual question answering </td>
+    <td>COS-Net</td>
+    <td> Comprehending and Ordering Semantics for Image Captioning </td>
     <td>CVPR</td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>GCN-LSTM</td>
-    <td> Exploring visual relationship for image captioning </td>
-    <td>ECCV</td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>Transformer</td>
-    <td> Conceptual captions: A cleaned, hypernymed, image alt-text dataset for automatic image captioning </td>
-    <td>ACL</td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>Meshed-Memory</td>
-    <td> Meshed-Memory Transformer for Image Captioning </td>
-    <td>CVPR</td>
-    <td>2020</td>
-  </tr>
-  <tr>
-    <td>X-LAN</td>
-    <td> X-Linear Attention Networks for Image Captioning </td>
-    <td>CVPR</td>
-    <td>2020</td>
-  </tr>
-  <tr>
-    <td>TDEN</td>
-    <td> Scheduled Sampling in Vision-Language Pretraining
-with Decoupled Encoder-Decoder Network </td>
-    <td>AAAI</td>
-    <td>2021</td>
+    <td>2022</td>
   </tr>
 </table>
 
-
-
-#### Image Captioning on MSCOCO (Cross-Entropy Loss)
-| Name | Model | BLEU@1 | BLEU@2 | BLEU@3 | BLEU@4 | METEOR | ROUGE-L | CIDEr-D | SPICE |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| LSTM-A3 | [GoogleDrive](https://drive.google.com/file/d/13fJVIK7ZgQnNMWzIbFicETDx6AgLg0NH/view?usp=sharing)| 75.3 | 59.0 | 45.4 | 35.0 | 26.7 | 55.6 | 107.7|  19.7 |
-| Attention | [GoogleDrive](https://drive.google.com/file/d/1aw8lPcDlf8C8UPsphwqbMAsq5-YSHIEf/view?usp=sharing) | 76.4 | 60.6 | 46.9 | 36.1 | 27.6 | 56.6 | 113.0 | 20.4 |
-| Up-Down | [GoogleDrive](https://drive.google.com/file/d/1giOJ5llaNjXz2JClN3Mqe93VIy1Fu5pq/view?usp=sharing) | 76.3 | 60.3 | 46.6 | 36.0 | 27.6 | 56.6 | 113.1 | 20.7 |
-| GCN-LSTM | [GoogleDrive](https://drive.google.com/file/d/1eLZqt2xS32lUOQibxEDclwANMtska4L9/view?usp=sharing) |76.8 | 61.1 | 47.6 | 36.9 | 28.2 | 57.2 | 116.3 | 21.2 |
-| Transformer | [GoogleDrive](https://drive.google.com/file/d/1Q6Tt2z_NKmnr0ai0uRRNyap2-DxxM7Wy/view?usp=sharing) | 76.4 | 60.3 | 46.5 | 35.8|28.2|56.7| 116.6| 21.3 |
-| Meshed-Memory | [GoogleDrive](https://drive.google.com/file/d/1i4JZ8rbLiWRGtCs8wdRG047pbZA-BL2x/view?usp=sharing) | 76.3 | 60.2 | 46.4 | 35.6 | 28.1 | 56.5 | 116.0 | 21.2 |
-| X-LAN | [GoogleDrive](https://drive.google.com/file/d/1zgUWEDD7EiRyih8G_DyE6unshjKjeKjV/view?usp=sharing) | 77.5 | 61.9 | 48.3 | 37.5 | 28.6 | 57.6 | 120.7 | 21.9 |
-| TDEN | [GoogleDrive](https://drive.google.com/file/d/19alfPj-gIudoL5CHsS4VwhfnU-FhTXW3/view?usp=sharing) | 75.5 | 59.4 | 45.7 | 34.9 | 28.7 | 56.7 | 116.3 | 22.0 |
-
-#### Image Captioning on MSCOCO (CIDEr Score Optimization)
-| Name | Model | BLEU@1 | BLEU@2 | BLEU@3 | BLEU@4 | METEOR | ROUGE-L | CIDEr-D | SPICE |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| LSTM-A3 | [GoogleDrive](https://drive.google.com/file/d/1KELHgYpBh5lsIiQ9yb9o127tea8_nbHo/view?usp=sharing)| 77.9 | 61.5| 46.7| 35.0| 27.1| 56.3| 117.0| 20.5 |
-| Attention | [GoogleDrive](https://drive.google.com/file/d/1m04qezTUJpdkBI3oIo_5Y9fIZG7_jZ2S/view?usp=sharing) | 79.4| 63.5| 48.9| 37.1| 27.9| 57.6| 123.1| 21.3 |
-| Up-Down | [GoogleDrive](https://drive.google.com/file/d/1tHM06k413ANuAr7a5jCAtKeN_lQ-ieBk/view?usp=sharing) | 80.1| 64.3| 49.7| 37.7| 28.0| 58.0| 124.7| 21.5 |
-| GCN-LSTM | [GoogleDrive](https://drive.google.com/file/d/1qwilTeK2WQCZEDXcJAmmteLZfLOEhg7P/view?usp=sharing) | 80.2| 64.7| 50.3| 38.5| 28.5| 58.4| 127.2| 22.1 |
-| Transformer | [GoogleDrive](https://drive.google.com/file/d/1y3E4t5pQUuvN_gB_tgBVX9HvzM5QSex5/view?usp=sharing) | 80.5| 65.4| 51.1| 39.2| 29.1| 58.7| 130.0| 23.0 |
-| Meshed-Memory | [GoogleDrive](https://drive.google.com/file/d/1GkvwhTzjGQG4fUbCl1-N_TFd8HowOnfy/view?usp=sharing) | 80.7| 65.5| 51.4| 39.6| 29.2| 58.9| 131.1| 22.9 |
-| X-LAN | [GoogleDrive](https://drive.google.com/file/d/13b6nhbnq4h8JKbS0oQB_F2tnRUiUt5g-/view?usp=sharing) | 80.4| 65.2| 51.0| 39.2| 29.4| 59.0| 131.0| 23.2 |
-| TDEN | [GoogleDrive](https://drive.google.com/file/d/1GTbbwfbJHIu6uDmcLY-pedCiuWHyR7nK/view?usp=sharing) | 81.3| 66.3| 52.0| 40.1| 29.6| 59.8| 132.6| 23.4 |
+Models and results for COS-Net can be downloaded from the links in [configs/image_caption/cosnet/README.md](configs/image_caption/cosnet/README.md).
 
 ## License
 X-modaler is released under the [Apache License, Version 2.0](LICENSE).
@@ -132,5 +64,15 @@ If you use X-modaler in your research, please use the following BibTeX entry.
   title =        {X-modaler: A Versatile and High-performance Codebase for Cross-modal Analytics},
   booktitle =    {Proceedings of the 29th ACM international conference on Multimedia},
   year =         {2021}
+}
+```
+
+## Citing COS-Net
+```BibTeX
+@inproceedings{cosnet2022cvpr,
+  title={Comprehending and Ordering Semantics for Image Captioning},
+  author={Li, Yehao and Pan, Yingwei and Yao, Ting and Mei, Tao},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  year={2022}
 }
 ```

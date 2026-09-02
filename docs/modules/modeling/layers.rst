@@ -5,18 +5,6 @@ xmodaler.modeling.layers
 
 .. autofunction:: xmodaler.modeling.layers.create_act.get_activation
 
-.. autoclass:: xmodaler.modeling.layers.attention_pooler.AttentionPooler
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.layers.base_attention.BaseAttention
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-
 .. autoclass:: xmodaler.modeling.layers.bert.BertSelfAttention
    :members:
    :special-members: __init__
@@ -88,38 +76,8 @@ xmodaler.modeling.layers
    :special-members: __init__
    :undoc-members:
    :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.layers.multihead_attention.MultiHeadAttentionMemory
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.layers.multihead_attention.MultiHeadAttention
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.layers.positionwise_feedforward.PositionWiseFeedForward
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.layers.lowrank_bilinear_layers.LowRankBilinearAttention
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
 
-.. autoclass:: xmodaler.modeling.layers.lowrank_bilinear_layers.LowRankBilinearLayer
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.layers.scattention.SCAttention
+.. autoclass:: xmodaler.modeling.layers.cosnet_layer.COSNetDecBlock
    :members:
    :special-members: __init__
    :undoc-members:

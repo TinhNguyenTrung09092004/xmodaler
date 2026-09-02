@@ -13,9 +13,3 @@ xmodaler.scorer
    :special-members: __init__
    :undoc-members:
    :show-inheritance:
-   
-.. autoclass:: xmodaler.scorer.BertTokenizedScorer
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:

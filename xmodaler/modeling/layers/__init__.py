@@ -1,6 +1,5 @@
 from .create_act import get_act_layer
-from .lowrank_bilinear_layers import LowRankBilinearLayer, LowRankBilinearAttention
-from .scattention import SCAttention
-from .base_attention import BaseAttention
+from .bert import BertLayer, BertGenerationLayer
+from .cosnet_layer import COSNetDecBlock
 
 __all__ = list(globals().keys())

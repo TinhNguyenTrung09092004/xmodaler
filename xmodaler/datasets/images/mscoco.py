@@ -14,7 +14,7 @@ from xmodaler.config import kfg
 from xmodaler.functional import read_np, dict_as_tensor, boxes_to_locfeats
 from ..build import DATASETS_REGISTRY
 
-__all__ = ["MSCoCoDataset", "MSCoCoSampleByTxtDataset"]
+__all__ = ["MSCoCoDataset"]
 
 @DATASETS_REGISTRY.register()
 class MSCoCoDataset:
@@ -159,46 +159,3 @@ class MSCoCoDataset:
 
         dict_as_tensor(ret)
         return ret
-
-
-@DATASETS_REGISTRY.register()
-class MSCoCoSampleByTxtDataset(MSCoCoDataset):
-    @configurable
-    def __init__(
-        self,
-        stage: str,
-        anno_file: str,
-        seq_per_img: int,
-        max_feat_num: int,
-        max_seq_len: int,
-        feats_folder: str,
-        relation_file: str,
-        gv_feat_file: str,
-        attribute_file: str
-    ):
-        super(MSCoCoSampleByTxtDataset, self).__init__(
-            stage,
-            anno_file,
-            seq_per_img, 
-            max_feat_num,
-            max_seq_len,
-            feats_folder,
-            relation_file,
-            gv_feat_file,
-            attribute_file
-        )
-        assert self.seq_per_img == 1
-
-    def _preprocess_datalist(self, datalist):
-        if self.stage == 'train':
-            expand_datalist = []
-            for data in tqdm(datalist, desc='Expand COCO Dataset'):
-                for token_id, target_id in zip(data['tokens_ids'], data['target_ids']):
-                    expand_datalist.append({
-                        'image_id': data['image_id'],
-                        'tokens_ids': np.expand_dims(token_id, axis=0),
-                        'target_ids': np.expand_dims(target_id, axis=0)
-                    })
-            return expand_datalist
-        else:
-            return datalist

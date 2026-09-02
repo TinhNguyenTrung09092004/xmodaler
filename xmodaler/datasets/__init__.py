@@ -10,11 +10,8 @@ from .build import (
 )
 
 from .common import DatasetFromList, MapDataset
-from .images.mscoco import MSCoCoDataset, MSCoCoSampleByTxtDataset
-from .images.mscoco_bert import MSCoCoBertDataset
+from .images.mscoco import MSCoCoDataset
 from .images.mscoco_cosnet import MSCoCoCOSNetDataset
-from .images.mscoco_feat import MSCoCoFeatDataset
-#from .images.mscoco_raw import MSCoCoRawDataset
 
 
 __all__ = [k for k in globals().keys() if not k.startswith("_")]

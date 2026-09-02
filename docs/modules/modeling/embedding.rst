@@ -10,14 +10,7 @@ xmodaler.modeling.embedding
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: xmodaler.modeling.embedding.VisualBaseEmbedding
-   :members:
-   :special-members: __init__
-   :private-members:
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.embedding.VisualIdentityEmbedding
+.. autoclass:: xmodaler.modeling.embedding.VisualGridEmbedding
    :members:
    :special-members: __init__
    :private-members:

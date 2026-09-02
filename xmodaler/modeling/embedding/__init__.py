@@ -5,7 +5,6 @@
 """
 from .build import build_embeddings
 from .token_embed import TokenBaseEmbedding
-from .visual_embed import VisualBaseEmbedding, VisualIdentityEmbedding
 from .visual_grid_embed import VisualGridEmbedding
 
 __all__ = list(globals().keys())

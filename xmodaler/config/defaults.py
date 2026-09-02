@@ -112,10 +112,6 @@ _C.MODEL.USE_EMA = False
 
 _C.MODEL.EMA_DECAY = 0.9999
 
-_C.MODEL.ENSEMBLE_WEIGHTS = ['']
-
-_C.MODEL.MODEL_WEIGHTS = [1.0, 1.0]
-
 # ----------------------------------------------------------------------------
 # Token embedding
 # ----------------------------------------------------------------------------
@@ -200,17 +196,7 @@ _C.MODEL.BERT.NUM_HIDDEN_LAYERS = 12
 
 _C.MODEL.BERT.LAYER_DROP = 0.0
 
-_C.MODEL.BERT.V_NUM_HIDDEN_LAYERS = 6
-
-_C.MODEL.BERT.V_LAYER_DROP = 0.0
-
-_C.MODEL.BERT.NUM_UNDERSTANDING_LAYERS = 6
-
-_C.MODEL.BERT.U_LAYER_DROP = 0.0
-
 _C.MODEL.BERT.NUM_GENERATION_LAYERS = 6
-
-_C.MODEL.BERT.G_LAYER_DROP = 0.0
 
 # ----------------------------------------------------------------------------
 # Solver

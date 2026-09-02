@@ -22,14 +22,14 @@ mscoco_dataset/
   captions_test5k.json
   # image files that are mentioned in the corresponding json
   features/
-    up_down/
+    CLIP_RN101_49/
       *.npz
 ```
 
 When the dataset wrapper and data files are ready, you need to specify the corresponding paths to these data files in the config file. For example, 
 ```
 DATALOADER:
-	FEATS_FOLDER: '../open_source_dataset/mscoco_dataset/features/up_down'    # feature folder
+	FEATS_FOLDER: '../open_source_dataset/mscoco_dataset/features/CLIP_RN101_49'    # feature folder
 	ANNO_FOLDER: '../open_source_dataset/mscoco_dataset' # annotation folders
 INFERENCE:
 	VOCAB: '../open_source_dataset/mscoco_dataset/vocabulary.txt'

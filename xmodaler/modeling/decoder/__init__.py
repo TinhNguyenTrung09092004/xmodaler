@@ -4,13 +4,7 @@
 @contact: yehaoli.sysu@gmail.com
 """
 from .build import build_decoder, add_decoder_config
-from .updown_decoder import UpDownDecoder
-from .salstm_decoder import SALSTMDecoder
-from .transformer_decoder import TransformerDecoder
-from .meshed_decoder import MeshedDecoder
-from .decouple_bert_decoder import DecoupleBertDecoder
-from .lowrank_bilinear_decoder import XLANDecoder
-from .attribute_decoder import AttributeDecoder
+from .decoder import Decoder
 from .cosnet_decoder import COSNetDecoder
 
 __all__ = list(globals().keys())

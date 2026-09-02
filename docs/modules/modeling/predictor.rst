@@ -14,9 +14,3 @@ xmodaler.modeling.predictor
    :special-members: __init__
    :undoc-members:
    :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.predictor.BertPredictionHead
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:

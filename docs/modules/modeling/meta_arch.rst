@@ -11,19 +11,7 @@ xmodaler.modeling.meta_arch
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: xmodaler.modeling.meta_arch.RnnAttEncoderDecoder
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
 .. autoclass:: xmodaler.modeling.meta_arch.TransformerEncoderDecoder
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.modeling.meta_arch.TDENCaptioner
    :members:
    :special-members: __init__
    :undoc-members:

@@ -5,7 +5,6 @@
 """
 from .build import build_losses, build_rl_losses, add_loss_config
 
-from .cross_entropy import CrossEntropy
 from .label_smoothing import LabelSmoothing
 from .reward_criterion import RewardCriterion
 from .semcomphder_loss import SemComphderLoss
