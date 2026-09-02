@@ -104,14 +104,6 @@ xmodaler.engine
    :undoc-members:
    :show-inheritance:
    
-.. autoclass:: xmodaler.engine.RetrievalTrainer
-   :members:
-   :special-members: __init__
-   :inherited-members:
-   :private-members:
-   :undoc-members:
-   :show-inheritance:
-   
 .. autoclass:: xmodaler.engine.RLTrainer
    :members:
    :special-members: __init__
@@ -127,37 +119,3 @@ xmodaler.engine
    :private-members:
    :undoc-members:
    :show-inheritance:
-   
-.. autoclass:: xmodaler.engine.SingleStreamRetrievalTrainer
-   :members:
-   :special-members: __init__
-   :inherited-members:
-   :private-members:
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.engine.SingleStreamRetrievalTrainerHardNegatives
-   :members:
-   :special-members: __init__
-   :inherited-members:
-   :private-members:
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.engine.TDENPretrainer
-   :members:
-   :special-members: __init__
-   :inherited-members:
-   :private-members:
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.engine.VCRTrainer
-   :members:
-   :special-members: __init__
-   :inherited-members:
-   :private-members:
-   :undoc-members:
-   :show-inheritance:
-
-   

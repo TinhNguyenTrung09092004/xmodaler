@@ -345,7 +345,7 @@ class EvalHook(HookBase):
     It is executed every ``eval_period`` iterations and after the last iteration.
     """
 
-    def __init__(self, eval_period, eval_start, eval_function, iters_per_epoch, stage, multi_gpu_eval):
+    def __init__(self, eval_period, eval_start, eval_function, iters_per_epoch, stage):
         """
         Args:
             eval_period (int): the period to run `eval_function`. Set to 0 to
@@ -362,14 +362,11 @@ class EvalHook(HookBase):
         self._func = eval_function
         self._stage = stage
         self._eval_start = eval_start
-        self._multi_gpu_eval = multi_gpu_eval
 
     def _do_eval(self, epoch):
-        if self._multi_gpu_eval:
+        results = None
+        if comm.is_main_process():
             results = self._func(epoch)
-        else:
-            if comm.is_main_process():
-                results = self._func(epoch)
 
         # Evaluation may take different time among workers.
         # A barrier make them start the next iteration together.

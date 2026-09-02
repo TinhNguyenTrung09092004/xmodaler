@@ -27,12 +27,6 @@ from .func_caption import (
     decode_sequence_bert
 )
 
-from .func_pretrain import (
-    random_word,
-    random_region,
-    caption_to_mask_tokens
-)
-
 from .func_others import (
     flat_list_of_lists
 )

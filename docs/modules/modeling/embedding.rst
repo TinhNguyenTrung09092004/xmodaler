@@ -24,13 +24,6 @@ xmodaler.modeling.embedding
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: xmodaler.modeling.embedding.TDConvEDVisualBaseEmbedding
-   :members:
-   :special-members: __init__
-   :private-members:
-   :undoc-members:
-   :show-inheritance:   
-   
 .. autoclass:: xmodaler.modeling.embedding.position_embedding.SinusoidEncoding
    :members:
    :special-members: __init__

@@ -4,7 +4,7 @@ Datasets that have builtin support in X-modaler are listed in [builtin datasets]
 
 ## Register a Dataset
 
-To let X-modaler know how to obtain a dataset named “MyDataset”, users need to implement a class either in the folder `xmodaler/datasets/images` or `xmodaler/datasets/videos` that returns the item in your dataset and then tell X-modaler about this class:
+To let X-modaler know how to obtain a dataset named “MyDataset”, users need to implement a class in the folder `xmodaler/datasets/images` that returns the item in your dataset and then tell X-modaler about this class:
 ```
 from ..build import DATASETS_REGISTRY
 

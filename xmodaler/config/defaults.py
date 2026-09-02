@@ -51,10 +51,6 @@ _C.DATALOADER.SEQ_PER_SAMPLE = 5
 
 _C.DATALOADER.MAX_FEAT_NUM = -1
 
-_C.DATALOADER.NEGATIVE_SIZE = -1
-
-_C.DATALOADER.INF_BATCH_SIZE = 200 # for single stream retrieval only, chunk size
-
 _C.DATALOADER.USE_GLOBAL_V = True
 
 _C.DATALOADER.SAMPLE_PROB = 0.2
@@ -111,8 +107,6 @@ _C.MODEL.V_PREDICTOR = ''
 _C.MODEL.MAX_SEQ_LEN = 17
 
 _C.MODEL.WEIGHTS = ''
-
-_C.MODEL.ITM_NEG_PROB = 0.5
 
 _C.MODEL.USE_EMA = False
 
@@ -302,10 +296,6 @@ _C.LOSSES = CN()
 _C.LOSSES.NAMES = ['']
 
 _C.LOSSES.LABELSMOOTHING = 0.1
-
-_C.LOSSES.MARGIN = 0.2
-
-_C.LOSSES.MAX_VIOLATION = True
 
 # ---------------------------------------------------------------------------- #
 # SCORER options

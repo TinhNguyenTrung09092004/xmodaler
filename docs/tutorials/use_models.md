@@ -20,7 +20,7 @@ checkpointer.save("model_00") # save model
 
 ## Use a Model
 
-A model can be called by `outputs = model(inputs)`, where inputs is the batched output of [dataloader](custom_loaders.md). Each item in the dict  `inputs` corresponds to a batch of images/videos and the required inputs depend on the type of model and task. 
+A model can be called by `outputs = model(inputs)`, where inputs is the batched output of [dataloader](custom_loaders.md). Each item in the dict  `inputs` corresponds to a batch of images and the required inputs depend on the type of model. 
 
 **Training:** When in training mode, all models are required to be used under an EventStorage. The training statistics will be put into the storage:
 ```

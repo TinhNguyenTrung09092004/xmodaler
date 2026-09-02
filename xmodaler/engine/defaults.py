@@ -358,8 +358,7 @@ class DefaultTrainer(TrainerBase):
                     eval_start = cfg.INFERENCE.VAL_EVAL_START,
                     eval_function = val_and_save_results, 
                     iters_per_epoch = self.iters_per_epoch,
-                    stage = 'val',
-                    multi_gpu_eval=(cfg.ENGINE.NAME.startswith("SingleStreamRetrieval"))
+                    stage = 'val'
                 ))
             if self.ema is not None:
                 ret.append(
@@ -368,8 +367,7 @@ class DefaultTrainer(TrainerBase):
                         eval_start = cfg.INFERENCE.VAL_EVAL_START,
                         eval_function = val_ema_and_save_results, 
                         iters_per_epoch = self.iters_per_epoch,
-                        stage = 'val',
-                        multi_gpu_eval=(cfg.ENGINE.NAME.startswith("SingleStreamRetrieval"))
+                        stage = 'val'
                     ))
 
         if self.test_data_loader is not None:
@@ -379,8 +377,7 @@ class DefaultTrainer(TrainerBase):
                     eval_start = cfg.INFERENCE.TEST_EVAL_START,
                     eval_function = test_and_save_results, 
                     iters_per_epoch = self.iters_per_epoch,
-                    stage = 'test',
-                    multi_gpu_eval=(cfg.ENGINE.NAME.startswith("SingleStreamRetrieval"))
+                    stage = 'test'
                 ))
             if self.ema is not None:
                 ret.append(
@@ -389,8 +386,7 @@ class DefaultTrainer(TrainerBase):
                         eval_start = cfg.INFERENCE.TEST_EVAL_START,
                         eval_function = test_ema_and_save_results, 
                         iters_per_epoch = self.iters_per_epoch,
-                        stage = 'test',
-                        multi_gpu_eval=(cfg.ENGINE.NAME.startswith("SingleStreamRetrieval"))
+                        stage = 'test'
                     ))
 
         if comm.is_main_process():

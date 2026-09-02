@@ -8,7 +8,6 @@ Original copyright of Facebook code below, modifications by Yehao Li, Copyright 
 from .build import META_ARCH_REGISTRY, build_model, add_config
 from .rnn_att_enc_dec import RnnAttEncoderDecoder
 from .transformer_enc_dec import TransformerEncoderDecoder
-from .tden import TDENBiTransformer, TDENPretrain, TDENCaptioner
-from .uniter import UniterPretrain, UniterForMMUnderstanding
+from .tden import TDENCaptioner
 
 __all__ = list(globals().keys())

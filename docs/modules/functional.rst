@@ -2,8 +2,6 @@ xmodaler.functional
 =============================
 .. autofunction:: xmodaler.functional.boxes_to_locfeats
 
-.. autofunction:: xmodaler.functional.caption_to_mask_tokens
-
 .. autofunction:: xmodaler.functional.decode_sequence
 
 .. autofunction:: xmodaler.functional.decode_sequence_bert
@@ -23,10 +21,6 @@ xmodaler.functional
 .. autofunction:: xmodaler.functional.load_vocab
 
 .. autofunction:: xmodaler.functional.pad_tensor
-
-.. autofunction:: xmodaler.functional.random_region
-
-.. autofunction:: xmodaler.functional.random_word
 
 .. autofunction:: xmodaler.functional.read_lines
 

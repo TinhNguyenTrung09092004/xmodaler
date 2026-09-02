@@ -1,24 +1,6 @@
 xmodaler.losses 
 =============================
 
-.. autoclass:: xmodaler.losses.BCEWithLogits
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.losses.BatchTriplet
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.losses.Triplet
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
 .. autoclass:: xmodaler.losses.CrossEntropy
    :members:
    :special-members: __init__
@@ -26,12 +8,6 @@ xmodaler.losses
    :show-inheritance:
 
 .. autoclass:: xmodaler.losses.LabelSmoothing
-   :members:
-   :special-members: __init__
-   :undoc-members:
-   :show-inheritance:
-   
-.. autoclass:: xmodaler.losses.PretrainLosses
    :members:
    :special-members: __init__
    :undoc-members:

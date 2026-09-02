@@ -1,6 +1,6 @@
 ## Getting Started with X-modaler
 
-This document provides a brief intro of the usage of builtin command-line tools in X-modaler, showing how to run inference with an existing model, and how to train a builtin model on a custom dataset (e.g., MSCOCO or MSVD).
+This document provides a brief intro of the usage of builtin command-line tools in X-modaler, showing how to run inference with an existing model, and how to train a builtin model on a custom dataset (e.g., MSCOCO).
 
 ### Training & Evaluation in Command Line
 
@@ -10,9 +10,9 @@ To train a model(e.g., UpDown) with "train_net.py", first setup the correspondin
 ```
 # Teacher Force
 python train_net.py --num-gpus 4 \
- 	--config-file configs/image_caption/updown.yaml
+ 	--config-file configs/image_caption/updown/updown.yaml
 
 # Reinforcement Learning
 python train_net.py --num-gpus 4 \
- 	--config-file configs/image_caption/updown_rl.yaml
+ 	--config-file configs/image_caption/updown/updown_rl.yaml
 ```

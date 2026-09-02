@@ -1,5 +1,5 @@
 # X-modaler
-[X-modaler](https://xmodaler.readthedocs.io/en/latest/) is a versatile and high-performance codebase for cross-modal analytics (e.g., image captioning, video captioning, vision-language pre-training, visual question answering, visual commonsense reasoning, and cross-modal retrieval). This codebase unifies comprehensive high-quality modules in state-of-the-art vision-language techniques, which are organized in a standardized and user-friendly fashion.
+This is an **image-captioning-only** distribution of [X-modaler](https://xmodaler.readthedocs.io/en/latest/), a versatile and high-performance codebase for cross-modal analytics. All modules unrelated to image captioning (video captioning, vision-language pre-training, visual question answering, visual commonsense reasoning and cross-modal retrieval) have been removed.
 
 The original paper can be found [here](https://arxiv.org/pdf/2108.08217.pdf).
 
@@ -29,11 +29,11 @@ To train a model(e.g., UpDown) with "train_net.py", first setup the correspondin
 ```
 # Teacher Force
 python train_net.py --num-gpus 4 \
- 	--config-file configs/image_caption/updown.yaml
+ 	--config-file configs/image_caption/updown/updown.yaml
 
 # Reinforcement Learning
 python train_net.py --num-gpus 4 \
- 	--config-file configs/image_caption/updown_rl.yaml
+ 	--config-file configs/image_caption/updown/updown_rl.yaml
 ```
 
 ## Model Zoo and Baselines
@@ -86,42 +86,6 @@ A large set of baseline results and trained models are available [here](https://
     <td>2020</td>
   </tr>
   <tr>
-    <td colspan="4" align="center"><font size=3><b>Video Captioning</b></font></td>
-  </tr>
-  <tr>
-    <td>MP-LSTM</td>
-    <td> Translating Videos to Natural Language Using Deep Recurrent Neural Networks </td>
-    <td>NAACL HLT</td>
-    <td>2015</td>
-  </tr>
-  <tr>
-    <td>TA</td>
-    <td> Describing Videos by Exploiting Temporal Structure </td>
-    <td>ICCV</td>
-    <td>2015</td>
-  </tr>
-  <tr>
-    <td>Transformer</td>
-    <td> Conceptual captions: A cleaned, hypernymed, image alt-text dataset for automatic image captioning </td>
-    <td>ACL</td>
-    <td>2018</td>
-  </tr>
-  <tr>
-    <td>TDConvED</td>
-    <td> Temporal Deformable Convolutional Encoder-Decoder Networks for Video Captioning </td>
-    <td>AAAI</td>
-    <td>2019</td>
-  </tr>
-  <tr>
-    <td colspan="4" align="center"><font size=3><b>Vision-Language Pretraining</b></font></td>
-  </tr>
-  <tr>
-    <td>Uniter</td>
-    <td> UNITER: UNiversal Image-TExt Representation Learning </td>
-    <td>ECCV</td>
-    <td>2020</td>
-  </tr>
-  <tr>
     <td>TDEN</td>
     <td> Scheduled Sampling in Vision-Language Pretraining
 with Decoupled Encoder-Decoder Network </td>
@@ -155,40 +119,6 @@ with Decoupled Encoder-Decoder Network </td>
 | Meshed-Memory | [GoogleDrive](https://drive.google.com/file/d/1GkvwhTzjGQG4fUbCl1-N_TFd8HowOnfy/view?usp=sharing) | 80.7| 65.5| 51.4| 39.6| 29.2| 58.9| 131.1| 22.9 |
 | X-LAN | [GoogleDrive](https://drive.google.com/file/d/13b6nhbnq4h8JKbS0oQB_F2tnRUiUt5g-/view?usp=sharing) | 80.4| 65.2| 51.0| 39.2| 29.4| 59.0| 131.0| 23.2 |
 | TDEN | [GoogleDrive](https://drive.google.com/file/d/1GTbbwfbJHIu6uDmcLY-pedCiuWHyR7nK/view?usp=sharing) | 81.3| 66.3| 52.0| 40.1| 29.6| 59.8| 132.6| 23.4 |
-
-#### Video Captioning on MSVD
-| Name | Model | BLEU@1 | BLEU@2 | BLEU@3 | BLEU@4 | METEOR | ROUGE-L | CIDEr-D | SPICE |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| MP-LSTM | [GoogleDrive](https://drive.google.com/file/d/1NDjaCyBntQZI3ehQ8QyUMTMrb1e6Dgsp/view?usp=sharing)| 77.0 | 65.6 | 56.9 | 48.1 | 32.4 | 68.1 | 73.1 | 4.8 |
-| TA | [GoogleDrive](https://drive.google.com/file/d/1SqvugATqHU3Le1jtTQKnL3FADJ7kbJK0/view?usp=sharing)| 80.4 | 68.9 | 60.1 | 51.0 | 33.5 | 70.0 | 77.2 | 4.9 | 
-| Transformer | [GoogleDrive](https://drive.google.com/file/d/1NlwZrAhGE9RPbWdypVz-Tkirt4u8E1t0/view?usp=sharing)| 79.0 | 67.6 | 58.5 | 49.4 | 33.3 | 68.7 | 80.3 | 4.9 |
-| TDConvED | [GoogleDrive](https://drive.google.com/file/d/1Th9FJe8o_4bMULuoCKqDHP_4Faa0RabZ/view?usp=sharing)| 81.6 | 70.4 | 61.3 | 51.7 | 34.1 | 70.4 | 77.8 | 5.0 |
-
-#### Video Captioning on MSR-VTT
-| Name | Model | BLEU@1 | BLEU@2 | BLEU@3 | BLEU@4 | METEOR | ROUGE-L | CIDEr-D | SPICE |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| MP-LSTM | [GoogleDrive](https://drive.google.com/file/d/1OBhtruTexuYV_MbiUL4obfUoNKZbEiUd/view?usp=sharing)| 73.6 | 60.8 | 49.0 | 38.6 | 26.0 | 58.3 | 41.1 | 5.6  |
-| TA | [GoogleDrive](https://drive.google.com/file/d/126nPL9lC6_Qa6_hMs32V1zSsJSDxpR9-/view?usp=sharing)| 74.3 | 61.8 | 50.3 | 39.9 | 26.4 | 59.4 | 42.9 | 5.8  | 
-| Transformer | [GoogleDrive](https://drive.google.com/file/d/1OEYQb4521fYlr40uQRn0sQb4eMsrtoNR/view?usp=sharing) | 75.4 | 62.3 | 50.0 | 39.2 | 26.5 | 58.7 | 44.0 | 5.9  |
-| TDConvED | [GoogleDrive](https://drive.google.com/file/d/1A3OGvjCpXUI6p1vy1qbNTVGLy5a0b3Dc/view?usp=sharing)| 76.4 | 62.3 | 49.9 | 38.9 | 26.3 | 59.0 | 40.7 | 5.7  |
-
-#### Visual Question Answering
-| Name | Model | Overall | Yes/No | Number | Other |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| Uniter | [GoogleDrive](https://drive.google.com/file/d/1cjBAeYSuSEN_IlQCnqtIoalkATMSQs87/view?usp=sharing) | 70.1 | 86.8 | 53.7 | 59.6 |
-| TDEN | [GoogleDrive](https://drive.google.com/file/d/1hwcDUboyCXghETamS_APJL8eGKY9OgFD/view?usp=sharing) | 71.9 | 88.3 | 54.3 | 62.0 |
-
-#### Caption-based image retrieval on Flickr30k
-| Name | Model | R1 | R5 | R10 | 
-| :---: | :---: | :---: | :---: | :---: |
-| Uniter | [GoogleDrive](https://drive.google.com/file/d/1hvoWMmHjSvxp3zqW10L7PoBQGbxM9MiF/view?usp=sharing) |61.6 | 87.7 |92.8|
-| TDEN | [GoogleDrive](https://drive.google.com/file/d/1SqYscN6UCbifxhMJ-ScpiLgWepMSx7uq/view?usp=sharing) | 62.0 | 86.6 | 92.4 |
-
-#### Visual commonsense reasoning
-| Name | Model | Q -> A | QA -> R | Q -> AR | 
-| :---: | :---: | :---: | :---: | :---: |
-| Uniter | [GoogleDrive](https://drive.google.com/file/d/1Edx9uorwDgI5nZRf9M3XJDRIIoRa5TmP/view?usp=sharing) | 73.0 | 75.3 | 55.4 |
-| TDEN | [GoogleDrive](https://drive.google.com/file/d/1WZfvo_PyHQwdO-DU_GRWWjbKSzwfyBFO/view?usp=sharing) | 75.0 | 76.5 | 57.7 |
 
 ## License
 X-modaler is released under the [Apache License, Version 2.0](LICENSE).
