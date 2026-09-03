@@ -7,7 +7,7 @@ OUTPUT_DIR: '/kaggle/working/cosnet_output'
 DATALOADER:
   TRAIN_BATCH_SIZE: 16
   TEST_BATCH_SIZE: 16
-  NUM_WORKERS: 2
+  NUM_WORKERS: 4
   FEATS_FOLDER: '/kaggle/temp/open_source_dataset/mscoco_dataset/features/CLIP_RN101_49'
   ANNO_FOLDER:  '/kaggle/temp/open_source_dataset/mscoco_dataset'
 

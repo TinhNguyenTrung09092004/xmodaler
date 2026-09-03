@@ -25,25 +25,16 @@ Thêm `--build-cider` nếu định chạy RL sau đó.
 
 ```python
 %cd /kaggle/working/xmodaler
-!bash kaggle/run_train.sh DATALOADER.NUM_WORKERS 4 INFERENCE.VAL_EVAL_START 24
+!bash kaggle/run_train.sh INFERENCE.VAL_EVAL_START 24
 ```
 
 Session sau, checkpoint đã có sẵn trong `/kaggle/working/cosnet_output`:
 
 ```python
-!bash kaggle/run_train.sh --resume DATALOADER.NUM_WORKERS 4 INFERENCE.VAL_EVAL_START 24
+!bash kaggle/run_train.sh --resume INFERENCE.VAL_EVAL_START 24
 ```
 
-Hai override đó là để tăng tốc, xem mục 3. Bỏ đi vẫn chạy đúng, chỉ chậm hơn.
-
-### Cell 4 — dọn checkpoint
-
-Chạy xen kẽ trong lúc cell 3 đang train (mỗi epoch lưu 1 file, không tự xóa,
-sẽ vượt cap 20GB của `/kaggle/working`):
-
-```python
-!python kaggle/prune_ckpt.py --keep 2
-```
+Override đó là để tăng tốc, xem mục 3. Bỏ đi vẫn chạy đúng, chỉ chậm hơn.
 
 ## 2. Vì sao là 2 GPU x batch 16
 
@@ -65,14 +56,14 @@ quota 30h/tuần → cần 3-4 session, và đó là chưa tính RL 60 epoch.
 
 Hai cách rút ngắn, không đổi chất lượng mô hình:
 
-- **`INFERENCE.VAL_EVAL_START 24`** — mỗi epoch `EvalHook` beam-search 5000 ảnh val
-  (~8-10 phút), × 35 epoch ≈ 5 tiếng. Kết quả đó không feed ngược vào đâu cả:
+- **`INFERENCE.VAL_EVAL_START 24`** (override lúc chạy) — mỗi epoch `EvalHook` beam-search
+  5000 ảnh val (~8-10 phút), × 35 epoch ≈ 5 tiếng. Kết quả đó không feed ngược vào đâu cả:
   [defaults.py:356-390](../xmodaler/engine/defaults.py#L356-L390) chỉ log ra, không chọn
   best checkpoint, không early stopping. Bỏ eval sớm → trọng số cuối giống hệt.
-- **`DATALOADER.NUM_WORKERS 4`** — một nửa mỗi step là ngồi chờ dữ liệu.
-  `data_time 0.53` cho batch 16 = ~33ms/file `.npz`, tức độ trễ mở file nhỏ, không
-  phải băng thông (12.8MB/s) cũng không phải CPU. Nên dù Kaggle chỉ có 4 vCPU,
-  tăng worker vẫn ăn vì chúng nằm chờ I/O. Nếu `data_time` về gần 0 thì ETA còn ~17h.
+- **`DATALOADER.NUM_WORKERS: 4`** (đã đặt sẵn trong `cosnet_kaggle.yaml`) — một nửa mỗi
+  step là ngồi chờ dữ liệu. `data_time 0.53` cho batch 16 = ~33ms/file `.npz`, tức độ trễ
+  mở file nhỏ, không phải băng thông (12.8MB/s) cũng không phải CPU. Nên dù Kaggle chỉ có
+  4 vCPU, tăng worker vẫn ăn vì chúng nằm chờ I/O. Nếu `data_time` về gần 0 thì ETA còn ~17h.
 
 Đo lại sau ~100 iter để biết lãi bao nhiêu.
 
@@ -94,7 +85,7 @@ dataset thứ hai rồi trỏ `DATALOADER.FEATS_FOLDER` vào đó.
 !mkdir -p /kaggle/working/cosnet_output
 !cp /kaggle/input/<ten-output-truoc>/cosnet_output/last_checkpoint /kaggle/working/cosnet_output/
 !cp /kaggle/input/<ten-output-truoc>/cosnet_output/model_Epoch_*.pth /kaggle/working/cosnet_output/
-!bash kaggle/run_train.sh --resume DATALOADER.NUM_WORKERS 4 INFERENCE.VAL_EVAL_START 24
+!bash kaggle/run_train.sh --resume INFERENCE.VAL_EVAL_START 24
 ```
 
 `last_checkpoint` chỉ chứa basename nên copy sang thư mục khác vẫn resume đúng.
