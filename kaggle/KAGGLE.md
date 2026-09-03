@@ -111,6 +111,5 @@ warmup. Global batch lúc này là 16, thấp hơn paper.)
 
 | Triệu chứng | Nguyên nhân |
 |---|---|
-| `No module named 'sacremoses'` | cũ: `pytorch_transformers` kéo cả model zoo legacy. Nay `xmodaler/tokenization` tự fallback stub khi thiếu — COS-Net không dùng BERT tokenizer |
 | `No space left on device` giữa chừng | disk Kaggle ~57GB dùng chung; `prepare_data.py` check trước khi giải nén, nhưng checkpoint tích lũy cũng ăn dần → chạy `prune_ckpt.py` |
 | DataLoader treo / worker chết | Kaggle chỉ có 4 vCPU; giữ `NUM_WORKERS: 2` (config gốc để 6, x2 process là quá tải) |

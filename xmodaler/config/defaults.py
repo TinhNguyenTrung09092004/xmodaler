@@ -159,17 +159,6 @@ _C.MODEL.VISUAL_EMBED.DROPOUT = 0.0
 _C.MODEL.VISUAL_EMBED.LOCATION_SIZE = 0
 
 # ----------------------------------------------------------------------------
-# Pre-training
-# ----------------------------------------------------------------------------
-_C.MODEL.PRETRAINING = CN()
-
-_C.MODEL.PRETRAINING.MODEL_NAME = 'bert-base-uncased'
-
-_C.MODEL.PRETRAINING.FROM_PRETRAINED = 'bert-base-uncased'
-
-_C.MODEL.PRETRAINING.DO_LOWER_CASE = True
-
-# ----------------------------------------------------------------------------
 # BERT
 # ----------------------------------------------------------------------------
 _C.MODEL.BERT = CN()

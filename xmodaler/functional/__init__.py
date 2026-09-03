@@ -23,8 +23,7 @@ from .func_feats import (
 )
 
 from .func_caption import (
-    decode_sequence,
-    decode_sequence_bert
+    decode_sequence
 )
 
 from .func_others import (

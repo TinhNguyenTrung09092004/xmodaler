@@ -14,7 +14,6 @@ See [installation instructions](https://xmodaler.readthedocs.io/en/latest/tutori
 * Linux or macOS with Python ≥ 3.6
 * PyTorch ≥ 1.8 and torchvision that matches the PyTorch installation. Install them together at pytorch.org to make sure of this
 * fvcore
-* pytorch_transformers
 * jsonlines
 * pycocotools
 
