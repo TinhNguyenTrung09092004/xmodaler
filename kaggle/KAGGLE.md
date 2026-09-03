@@ -1,33 +1,6 @@
 # Chạy COS-Net trên Kaggle (GPU T4 x2)
 
-## 0. Thiếu gì
-
-Dataset hiện tại của bạn có:
-
-```
-mscoco_caption_anno_clipfilter_fast_{train,val,test}.pkl
-CLIP_RN101_49.tar.00{1,2,3,4}
-```
-
-Còn **thiếu 3 file bắt buộc**, không thể sinh ra từ những gì đang có:
-
-| File | Config key | Dùng để làm gì |
-|---|---|---|
-| `vocabulary.txt` | `INFERENCE.VOCAB` | map token id trong pkl ngược lại thành chữ. Không có nó thì `load_vocab()` chết ngay lúc dựng `BeamSearcher`. |
-| `captions_val5k.json` | `INFERENCE.VAL_ANNFILE` | ground truth COCO cho split val 5k (Karpathy) |
-| `captions_test5k.json` | `INFERENCE.TEST_ANNFILE` | ground truth COCO cho split test 5k |
-
-Cả 3 nằm trong thư mục `cosnet` trên Google Drive / Baidu ở
-[configs/image_caption/cosnet/README.md](../configs/image_caption/cosnet/README.md)
-(mã Baidu: `cosn`). Tải về, thêm vào cùng Kaggle dataset, xong.
-
-Hai file cho giai đoạn RL — `mscoco_train_gts.pkl` và `mscoco_train_cider.pkl` —
-thì **không cần tải**, `prepare_data.py --build-cider` sinh được từ file
-`..._fast_train.pkl` qua `tools/cider_cache.py`.
-
 ## 1. Notebook cells
-
-Bật GPU **T4 x2** + Internet trong Settings.
 
 ### Cell 1 — code + deps
 
@@ -138,8 +111,6 @@ warmup. Global batch lúc này là 16, thấp hơn paper.)
 
 | Triệu chứng | Nguyên nhân |
 |---|---|
-| `FileNotFoundError: .../vocabulary.txt` | thiếu file ở mục 0 |
-| `java: command not found` khi eval | `apt-get update && apt-get install -y default-jre`; `pycocoevalcap` gọi java cho PTBTokenizer/METEOR/SPICE |
 | `No module named 'sacremoses'` | cũ: `pytorch_transformers` kéo cả model zoo legacy. Nay `xmodaler/tokenization` tự fallback stub khi thiếu — COS-Net không dùng BERT tokenizer |
 | `No space left on device` giữa chừng | disk Kaggle ~57GB dùng chung; `prepare_data.py` check trước khi giải nén, nhưng checkpoint tích lũy cũng ăn dần → chạy `prune_ckpt.py` |
 | DataLoader treo / worker chết | Kaggle chỉ có 4 vCPU; giữ `NUM_WORKERS: 2` (config gốc để 6, x2 process là quá tải) |
