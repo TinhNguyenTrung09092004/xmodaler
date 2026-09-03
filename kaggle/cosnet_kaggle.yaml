@@ -2,31 +2,25 @@ _BASE_: "../configs/image_caption/cosnet/cosnet.yaml"
 
 OUTPUT_DIR: '/kaggle/working/cosnet_output'
 
-###################################### DATALOADER ######################################
 DATALOADER:
-  # per-GPU batch. 2 x 16 == the original 4 x 8, so iters/epoch and WARMUP are unchanged.
   TRAIN_BATCH_SIZE: 16
   TEST_BATCH_SIZE: 16
   NUM_WORKERS: 2
   FEATS_FOLDER: '/kaggle/temp/open_source_dataset/mscoco_dataset/features/CLIP_RN101_49'
   ANNO_FOLDER:  '/kaggle/temp/open_source_dataset/mscoco_dataset'
 
-####################################### Optimizer #######################################
 SOLVER:
   CHECKPOINT_PERIOD: 1
   EVAL_PERIOD: 1
   WRITE_PERIOD: 50
 
-####################################### scorer #######################################
 SCORER:
   GT_PATH: '/kaggle/temp/open_source_dataset/mscoco_dataset/mscoco_train_gts.pkl'
   CIDER_CACHED: '/kaggle/temp/open_source_dataset/mscoco_dataset/mscoco_train_cider.pkl'
 
-####################################### evaluation #######################################
 INFERENCE:
   VOCAB: '/kaggle/temp/open_source_dataset/mscoco_dataset/vocabulary.txt'
   VAL_ANNFILE: '/kaggle/temp/open_source_dataset/mscoco_dataset/captions_val5k.json'
   TEST_ANNFILE: '/kaggle/temp/open_source_dataset/mscoco_dataset/captions_test5k.json'
   VAL_EVAL_START: -1
-  # beam search over test5k costs ~10 min/epoch; only run it near the end
   TEST_EVAL_START: 29

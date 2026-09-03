@@ -1,11 +1,3 @@
-"""
-Keep only the N newest epoch checkpoints in OUTPUT_DIR.
-
-The trainer saves one per epoch and never deletes any (hooks.PeriodicCheckpointer is
-built without max_to_keep), which overruns the 20GB /kaggle/working cap before epoch 35.
-
-    python kaggle/prune_ckpt.py --keep 2
-"""
 import argparse
 import os
 import re

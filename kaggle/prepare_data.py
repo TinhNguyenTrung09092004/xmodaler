@@ -1,20 +1,3 @@
-"""
-Build the directory layout that configs/image_caption/cosnet expects out of the
-files in a read-only Kaggle input dataset.
-
-    DATA_ROOT/
-      cosnet/mscoco_caption_anno_clipfilter_fast_{train,val,test}.pkl
-      vocabulary.txt
-      captions_val5k.json
-      captions_test5k.json
-      mscoco_train_gts.pkl        (--build-cider)
-      mscoco_train_cider.pkl      (--build-cider)
-      features/CLIP_RN101_49/<image_id>.npz
-
-Run from the repo root:
-    python kaggle/prepare_data.py
-    python kaggle/prepare_data.py --build-cider
-"""
 import argparse
 import glob
 import os
@@ -72,11 +55,20 @@ def link(src, dst):
     print("  linked %s -> %s" % (dst, src))
 
 
-def locate_npz_dir(feats_root):
-    """Return the directory actually holding the .npz files, whatever the tar layout."""
-    for path in glob.iglob(os.path.join(feats_root, "**", "*.npz"), recursive=True):
+def locate_npz_dir(root):
+    for path in glob.iglob(os.path.join(root, "**", "*.npz"), recursive=True):
         return os.path.dirname(path)
     return None
+
+
+def unpack_nested_zips(feats_root):
+    zips = glob.glob(os.path.join(feats_root, "**", "*.zip"), recursive=True)
+    for z in zips:
+        print("[feats] unzipping %s (%s)" % (z, human(os.path.getsize(z))))
+        if sh("unzip -q -o '%s' -d '%s'" % (z, os.path.dirname(z))) != 0:
+            sys.exit("[FATAL] unzip failed on %s" % z)
+        os.remove(z)
+    return len(zips)
 
 
 def extract_features(input_dir, data_root, force):
@@ -90,16 +82,16 @@ def extract_features(input_dir, data_root, force):
 
     found = locate_npz_dir(feats_root)
     if found and not force:
-        print("[feats] .npz files already present in %s, skipping extraction "
-              "(--force-extract to redo)" % found)
+        print("[feats] .npz already present in %s, skipping (--force-extract to redo)" % found)
         return found
 
     total = sum(os.path.getsize(p) for p in parts)
     free = shutil.disk_usage(data_root).free
     print("[feats] %d parts, %s total" % (len(parts), human(total)))
     print("[feats] free space on %s: %s" % (data_root, human(free)))
-    if free < total * 1.05:
-        sys.exit("[FATAL] not enough disk: need ~%s free, have %s" % (human(total), human(free)))
+    if free < total * 2.2:
+        sys.exit("[FATAL] not enough disk: need ~%s free, have %s"
+                 % (human(total * 2.2), human(free)))
 
     cat_parts = " ".join("'%s'" % p for p in parts)
     print("[feats] archive layout:")
@@ -109,6 +101,9 @@ def extract_features(input_dir, data_root, force):
     if sh("cat %s | tar -x -C '%s'" % (cat_parts, feats_root)) != 0:
         sys.exit("[FATAL] extraction failed")
 
+    while unpack_nested_zips(feats_root):
+        pass
+
     found = locate_npz_dir(feats_root)
     if found is None:
         print("[FATAL] no *.npz anywhere under %s. What was extracted:" % feats_root)
@@ -116,7 +111,6 @@ def extract_features(input_dir, data_root, force):
         sys.exit(1)
 
     if os.path.realpath(found) != os.path.realpath(feats_dir):
-        # The config points at features/CLIP_RN101_49; bridge whatever tar produced.
         print("[feats] .npz files landed in %s" % found)
         if os.path.islink(feats_dir):
             os.remove(feats_dir)
@@ -176,10 +170,8 @@ def build_cider(data_root, repo_root):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--input-dir", default=None)
-    ap.add_argument("--data-root", default=DEFAULT_DATA_ROOT,
-                    help="must match ANNO_FOLDER in kaggle/cosnet_kaggle.yaml")
-    ap.add_argument("--build-cider", action="store_true",
-                    help="generate mscoco_train_gts.pkl / mscoco_train_cider.pkl for the RL stage")
+    ap.add_argument("--data-root", default=DEFAULT_DATA_ROOT)
+    ap.add_argument("--build-cider", action="store_true")
     ap.add_argument("--force-extract", action="store_true")
     ap.add_argument("--skip-features", action="store_true")
     args = ap.parse_args()

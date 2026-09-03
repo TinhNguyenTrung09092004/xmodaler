@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Self-critical stage. Run from the repo root.
 set -e
 
 export CUDA_VISIBLE_DEVICES=0,1

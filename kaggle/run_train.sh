@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# XE stage on Kaggle T4 x2. Run from the repo root, `--resume` to continue a run.
 set -e
 
 export CUDA_VISIBLE_DEVICES=0,1
