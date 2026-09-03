@@ -1,11 +1,13 @@
 # Chạy COS-Net trên Kaggle (GPU T4 x2)
 
+Settings: Accelerator `GPU T4 x2`, Internet `On`.
+
 ## 1. Notebook cells
 
 ### Cell 1 — code + deps
 
 ```python
-!git clone -b cosnet_kaggle <URL_REPO_CUA_BAN> /kaggle/working/xmodaler
+!git clone -b cosnet_kaggle https://github.com/TinhNguyenTrung09092004/xmodaler.git /kaggle/working/xmodaler
 %cd /kaggle/working/xmodaler
 !bash kaggle/setup.sh
 ```
@@ -14,19 +16,8 @@
 
 ```python
 %cd /kaggle/working/xmodaler
-!python kaggle/prepare_data.py --input-dir /kaggle/input/x-modaler-cosnet
+!python kaggle/prepare_data.py
 ```
-
-Bỏ `--input-dir` thì script tự dò trong `/kaggle/input/**`. Script sẽ:
-
-- symlink 3 file pkl vào `/kaggle/temp/open_source_dataset/mscoco_dataset/cosnet/`
-  (code đọc annotation ở subfolder `cosnet/`, xem
-  [mscoco_cosnet.py:53-57](../xmodaler/datasets/images/mscoco_cosnet.py#L53-L57))
-- symlink `vocabulary.txt` + 2 file json vào data root
-- `cat CLIP_RN101_49.tar.00* | tar -x` thẳng vào `/kaggle/temp/.../features/`
-  (không ghép file trung gian, để khỏi tốn gấp đôi disk)
-- kiểm tra `<image_id>.npz` khớp với `image_id` trong pkl và có đúng 2 key
-  `features` / `g_feature`
 
 Thêm `--build-cider` nếu định chạy RL sau đó.
 
@@ -34,16 +25,21 @@ Thêm `--build-cider` nếu định chạy RL sau đó.
 
 ```python
 %cd /kaggle/working/xmodaler
-!bash kaggle/run_train.sh
+!bash kaggle/run_train.sh DATALOADER.NUM_WORKERS 4 INFERENCE.VAL_EVAL_START 24
 ```
 
-Session sau (checkpoint đã có sẵn trong `/kaggle/working/cosnet_output`):
+Session sau, checkpoint đã có sẵn trong `/kaggle/working/cosnet_output`:
 
 ```python
-!bash kaggle/run_train.sh --resume
+!bash kaggle/run_train.sh --resume DATALOADER.NUM_WORKERS 4 INFERENCE.VAL_EVAL_START 24
 ```
 
-### Cell 4 (chạy song song) — dọn checkpoint
+Hai override đó là để tăng tốc, xem mục 3. Bỏ đi vẫn chạy đúng, chỉ chậm hơn.
+
+### Cell 4 — dọn checkpoint
+
+Chạy xen kẽ trong lúc cell 3 đang train (mỗi epoch lưu 1 file, không tự xóa,
+sẽ vượt cap 20GB của `/kaggle/working`):
 
 ```python
 !python kaggle/prune_ckpt.py --keep 2
@@ -56,30 +52,36 @@ Session sau (checkpoint đã có sẵn trong `/kaggle/working/cosnet_output`):
 `DataLoader`. Config gốc: 4 GPU x 8 = 32 ảnh/step, ~3540 iter/epoch, `NoamLR`
 warmup 20000 iter (~5.6 epoch).
 
-2 GPU x 16 = 32 ảnh/step → **iter/epoch và lịch warmup giữ nguyên y hệt bản gốc**,
+2 GPU x 16 = 32 ảnh/step → iter/epoch và lịch warmup giữ nguyên y hệt bản gốc,
 không cần chỉnh `LR_SCHEDULER.WARMUP`.
 
-Nếu OOM trên T4 16GB (mỗi ảnh nở thành `SEQ_PER_SAMPLE=5` câu → 80 chuỗi/GPU):
+Thực đo: `max_mem: 3900M` / 15GB, nên OOM không phải vấn đề ở mức batch này.
 
-```bash
-bash kaggle/run_train.sh DATALOADER.TRAIN_BATCH_SIZE 8 LR_SCHEDULER.WARMUP 40000
-```
+## 3. Thời gian — đọc trước khi chạy
 
-(batch giảm nửa → iter/epoch gấp đôi → warmup phải gấp đôi để giữ nguyên số epoch
-warmup. Global batch lúc này là 16, thấp hơn paper.)
+Thực đo epoch 1: `time: 1.0090  data_time: 0.5320`, ETA **36 giờ** cho 35 epoch.
+Con số ETA đó **chỉ tính iter train**, chưa cộng eval. Session Kaggle tối đa 12h,
+quota 30h/tuần → cần 3-4 session, và đó là chưa tính RL 60 epoch.
 
-## 3. Vấn đề thời gian — đọc trước khi chạy
+Hai cách rút ngắn, không đổi chất lượng mô hình:
 
-- 35 epoch x ~3540 iter. Trên T4 ước chừng **20–30 giờ**, trong khi 1 session
-  Kaggle tối đa 12 giờ và quota GPU là 30 giờ/tuần. Tức là ~3 session, gần hết
-  quota một tuần, **chưa tính** giai đoạn RL 60 epoch (còn nặng hơn nhiều vì mỗi
-  step phải sample thêm).
-- `cosnet_kaggle.yaml` đặt `TEST_EVAL_START: 29` để bỏ qua beam search trên test
-  5k mỗi epoch; val vẫn chạy đủ. Muốn nhanh hơn nữa thì `SOLVER.EVAL_PERIOD 2`.
-- `/kaggle/temp` **không** được giữ giữa các session → phải giải nén lại
-  CLIP_RN101_49 mỗi lần (vài phút–vài chục phút). Nếu thấy phiền: giải nén một
-  lần rồi upload thư mục `.npz` thành một Kaggle dataset thứ hai, mount trực tiếp
-  và trỏ `DATALOADER.FEATS_FOLDER` vào đó — bỏ hẳn bước giải nén.
+- **`INFERENCE.VAL_EVAL_START 24`** — mỗi epoch `EvalHook` beam-search 5000 ảnh val
+  (~8-10 phút), × 35 epoch ≈ 5 tiếng. Kết quả đó không feed ngược vào đâu cả:
+  [defaults.py:356-390](../xmodaler/engine/defaults.py#L356-L390) chỉ log ra, không chọn
+  best checkpoint, không early stopping. Bỏ eval sớm → trọng số cuối giống hệt.
+- **`DATALOADER.NUM_WORKERS 4`** — một nửa mỗi step là ngồi chờ dữ liệu.
+  `data_time 0.53` cho batch 16 = ~33ms/file `.npz`, tức độ trễ mở file nhỏ, không
+  phải băng thông (12.8MB/s) cũng không phải CPU. Nên dù Kaggle chỉ có 4 vCPU,
+  tăng worker vẫn ăn vì chúng nằm chờ I/O. Nếu `data_time` về gần 0 thì ETA còn ~17h.
+
+Đo lại sau ~100 iter để biết lãi bao nhiêu.
+
+`TEST_EVAL_START: 29` đã có sẵn trong `cosnet_kaggle.yaml` để bỏ beam search trên
+test 5k mỗi epoch.
+
+`/kaggle/temp` **không** được giữ giữa các session → phải giải nén lại
+CLIP_RN101_49 mỗi lần. Muốn bỏ hẳn: upload thư mục `.npz` đã giải thành một Kaggle
+dataset thứ hai rồi trỏ `DATALOADER.FEATS_FOLDER` vào đó.
 
 ### Nối session
 
@@ -92,7 +94,7 @@ warmup. Global batch lúc này là 16, thấp hơn paper.)
 !mkdir -p /kaggle/working/cosnet_output
 !cp /kaggle/input/<ten-output-truoc>/cosnet_output/last_checkpoint /kaggle/working/cosnet_output/
 !cp /kaggle/input/<ten-output-truoc>/cosnet_output/model_Epoch_*.pth /kaggle/working/cosnet_output/
-!bash kaggle/run_train.sh --resume
+!bash kaggle/run_train.sh --resume DATALOADER.NUM_WORKERS 4 INFERENCE.VAL_EVAL_START 24
 ```
 
 `last_checkpoint` chỉ chứa basename nên copy sang thư mục khác vẫn resume đúng.
@@ -100,16 +102,13 @@ warmup. Global batch lúc này là 16, thấp hơn paper.)
 ## 4. Giai đoạn RL
 
 ```python
-!python kaggle/prepare_data.py --input-dir ... --skip-features --build-cider
+!python kaggle/prepare_data.py --skip-features --build-cider
 !cp /kaggle/working/cosnet_output/model_Epoch_00035_Iter_*.pth /kaggle/working/cosnet_output/cosnet_xe.pth
 !bash kaggle/run_train_rl.sh
 ```
 
 Đổi `MODEL.WEIGHTS` trong `cosnet_rl_kaggle.yaml` nếu đặt tên file khác.
 
-## 5. Lỗi hay gặp
-
-| Triệu chứng | Nguyên nhân |
-|---|---|
-| `No space left on device` giữa chừng | disk Kaggle ~57GB dùng chung; `prepare_data.py` check trước khi giải nén, nhưng checkpoint tích lũy cũng ăn dần → chạy `prune_ckpt.py` |
-| DataLoader treo / worker chết | Kaggle chỉ có 4 vCPU; giữ `NUM_WORKERS: 2` (config gốc để 6, x2 process là quá tải) |
+`cosnet_rl_kaggle.yaml` đặt `SOLVER.FIND_UNUSED_PARAMETERS: True` vì nhánh RL chạy
+thêm một lượt `no_grad` + sampling decode mà chưa quan sát được. Nếu DDP không kêu
+thì bỏ đi để nhanh hơn vài %.

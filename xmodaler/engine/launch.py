@@ -10,6 +10,7 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 
 from xmodaler.utils import comm
+from xmodaler.utils.env import TORCH_VERSION
 
 __all__ = ["DEFAULT_TIMEOUT", "launch"]
 
@@ -98,6 +99,15 @@ def _distributed_worker(
 ):
     assert torch.cuda.is_available(), "cuda is not available. Please check your installation."
     global_rank = machine_rank * num_gpus_per_machine + local_rank
+    assert num_gpus_per_machine <= torch.cuda.device_count()
+    torch.cuda.set_device(local_rank)
+
+    # Binding the rank to its GPU up front lets NCCL skip guessing the device from the
+    # global rank, which is what the barrier below would otherwise force it to do.
+    pg_kwargs = {}
+    if TORCH_VERSION >= (2, 3):
+        pg_kwargs["device_id"] = torch.device("cuda", local_rank)
+
     try:
         dist.init_process_group(
             backend="NCCL",
@@ -105,6 +115,7 @@ def _distributed_worker(
             world_size=world_size,
             rank=global_rank,
             timeout=timeout,
+            **pg_kwargs,
         )
     except Exception as e:
         logger = logging.getLogger(__name__)
@@ -113,9 +124,6 @@ def _distributed_worker(
     # synchronize is needed here to prevent a possible timeout after calling init_process_group
     # See: https://github.com/facebookresearch/maskrcnn-benchmark/issues/172
     comm.synchronize()
-
-    assert num_gpus_per_machine <= torch.cuda.device_count()
-    torch.cuda.set_device(local_rank)
 
     # Setup the local process group (which contains ranks within the same machine)
     assert comm._LOCAL_PROCESS_GROUP is None

@@ -272,7 +272,7 @@ class DefaultTrainer(TrainerBase):
         # For training, wrap with DDP. But don't need this for inference.
         if comm.get_world_size() > 1:
             model = DistributedDataParallel(
-                model, find_unused_parameters=True, 
+                model, find_unused_parameters=cfg.SOLVER.FIND_UNUSED_PARAMETERS,
                 device_ids=[comm.get_local_rank()], broadcast_buffers=False
             )
         self.model = model
