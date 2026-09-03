@@ -1,0 +1,36 @@
+_BASE_: "../configs/image_caption/cosnet/cosnet.yaml"
+
+# Kaggle T4 x2 override of configs/image_caption/cosnet/cosnet.yaml
+# Paths below must match DATA_ROOT in kaggle/prepare_data.py.
+OUTPUT_DIR: '/kaggle/working/cosnet_output'
+
+###################################### DATALOADER ######################################
+DATALOADER:
+  # original: 4 GPUs x 8 = 32 images/step. 2 GPUs x 16 keeps the same global batch,
+  # so iters_per_epoch (~3540) and the NoamLR WARMUP of 20000 stay unchanged.
+  TRAIN_BATCH_SIZE: 16
+  TEST_BATCH_SIZE: 16
+  NUM_WORKERS: 2
+  FEATS_FOLDER: '/kaggle/temp/open_source_dataset/mscoco_dataset/features/CLIP_RN101_49'
+  ANNO_FOLDER:  '/kaggle/temp/open_source_dataset/mscoco_dataset'
+
+####################################### Optimizer #######################################
+SOLVER:
+  CHECKPOINT_PERIOD: 1
+  EVAL_PERIOD: 1
+  WRITE_PERIOD: 50
+
+####################################### scorer #######################################
+SCORER:
+  GT_PATH: '/kaggle/temp/open_source_dataset/mscoco_dataset/mscoco_train_gts.pkl'
+  CIDER_CACHED: '/kaggle/temp/open_source_dataset/mscoco_dataset/mscoco_train_cider.pkl'
+
+####################################### evaluation #######################################
+INFERENCE:
+  VOCAB: '/kaggle/temp/open_source_dataset/mscoco_dataset/vocabulary.txt'
+  VAL_ANNFILE: '/kaggle/temp/open_source_dataset/mscoco_dataset/captions_val5k.json'
+  TEST_ANNFILE: '/kaggle/temp/open_source_dataset/mscoco_dataset/captions_test5k.json'
+  # eval runs only when epoch > EVAL_START. Beam-search over 5k images costs ~10 min,
+  # so skip the test split until the run is nearly done and keep val every epoch.
+  VAL_EVAL_START: -1
+  TEST_EVAL_START: 29
