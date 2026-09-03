@@ -23,7 +23,7 @@ Thêm `--build-cider` nếu định chạy RL sau đó.
 
 ```python
 %cd /kaggle/working/xmodaler
-!bash kaggle/run_train.sh INFERENCE.VAL_EVAL_START 24
+!bash kaggle/run_train.sh INFERENCE.VAL_EVAL_START 24 SOLVER.EPOCH 1
 ```
 
 Session sau, checkpoint đã có sẵn trong `/kaggle/working/cosnet_output`:
