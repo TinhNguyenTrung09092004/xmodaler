@@ -1,0 +1,135 @@
+Cloning into '/kaggle/working/xmodaler'...
+remote: Enumerating objects: 1520, done.
+remote: Counting objects: 100% (558/558), done.
+remote: Compressing objects: 100% (285/285), done.
+remote: Total 1520 (delta 346), reused 409 (delta 267), pack-reused 962 (from 1)
+Receiving objects: 100% (1520/1520), 12.59 MiB | 27.48 MiB/s, done.
+Resolving deltas: 100% (787/787), done.
+/kaggle/working/xmodaler
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.2/50.2 kB 3.4 MB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.2/42.2 kB 239.1 MB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 129.6/129.6 kB 4.4 MB/s eta 0:00:00
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 104.3/104.3 MB 77.0 MB/s eta 0:00:00a 0:00:01
+  Building wheel for fvcore (setup.py) ... done
+  Building wheel for iopath (setup.py) ... done
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 176.4/176.4 kB 7.2 MB/s eta 0:00:00
+missing dep for pytorch_transformers: sacremoses
+openjdk version "17.0.18" 2026-01-20
+torch 2.10.0+cu128 cuda 12.8 gpus 2
+  0 Tesla T4
+  1 Tesla T4
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+  File "/kaggle/working/xmodaler/xmodaler/modeling/__init__.py", line 8, in <module>
+    from .meta_arch import(
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/__init__.py", line 9, in <module>
+    from .transformer_enc_dec import TransformerEncoderDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/transformer_enc_dec.py", line 15, in <module>
+    from .base_enc_dec import BaseEncoderDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/base_enc_dec.py", line 23, in <module>
+    from ..decode_strategy import build_beam_searcher, build_greedy_decoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/__init__.py", line 7, in <module>
+    from .greedy_decoder import GreedyDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/greedy_decoder.py", line 12, in <module>
+    from .decode_strategy import DecodeStrategy
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/decode_strategy.py", line 12, in <module>
+    from xmodaler.tokenization import BertTokenizer
+  File "/kaggle/working/xmodaler/xmodaler/tokenization/__init__.py", line 1, in <module>
+    from .tokenization_bert import BertTokenizer
+  File "/kaggle/working/xmodaler/xmodaler/tokenization/tokenization_bert.py", line 25, in <module>
+    from pytorch_transformers.tokenization_utils import PreTrainedTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/__init__.py", line 2, in <module>
+    from .tokenization_auto import AutoTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/tokenization_auto.py", line 26, in <module>
+    from .tokenization_xlm import XLMTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/tokenization_xlm.py", line 27, in <module>
+    import sacremoses as sm
+ModuleNotFoundError: No module named 'sacremoses'
+
+cell 2
+/kaggle/working/xmodaler
+[paths] input_dir = /kaggle/input/datasets/nguyntrungtnh/x-modaler-cosnet
+[paths] data_root = /kaggle/temp/open_source_dataset/mscoco_dataset
+[anno] linking annotation pkl files
+  linked /kaggle/temp/open_source_dataset/mscoco_dataset/cosnet/mscoco_caption_anno_clipfilter_fast_train.pkl -> /kaggle/input/datasets/nguyntrungtnh/x-modaler-cosnet/mscoco_caption_anno_clipfilter_fast_train.pkl
+  linked /kaggle/temp/open_source_dataset/mscoco_dataset/cosnet/mscoco_caption_anno_clipfilter_fast_val.pkl -> /kaggle/input/datasets/nguyntrungtnh/x-modaler-cosnet/mscoco_caption_anno_clipfilter_fast_val.pkl
+  linked /kaggle/temp/open_source_dataset/mscoco_dataset/cosnet/mscoco_caption_anno_clipfilter_fast_test.pkl -> /kaggle/input/datasets/nguyntrungtnh/x-modaler-cosnet/mscoco_caption_anno_clipfilter_fast_test.pkl
+[root] linking vocabulary / evaluation ground truth
+  linked /kaggle/temp/open_source_dataset/mscoco_dataset/vocabulary.txt -> /kaggle/input/datasets/nguyntrungtnh/x-modaler-cosnet/vocabulary.txt
+  linked /kaggle/temp/open_source_dataset/mscoco_dataset/captions_val5k.json -> /kaggle/input/datasets/nguyntrungtnh/x-modaler-cosnet/captions_val5k.json
+  linked /kaggle/temp/open_source_dataset/mscoco_dataset/captions_test5k.json -> /kaggle/input/datasets/nguyntrungtnh/x-modaler-cosnet/captions_test5k.json
+[feats] 4 parts, 13.8GB total
+[feats] free space on /kaggle/temp/open_source_dataset/mscoco_dataset: 1.0TB
+[feats] extracting into /kaggle/temp/open_source_dataset/mscoco_dataset/features ...
+[FATAL] after extraction there is no /kaggle/temp/open_source_dataset/mscoco_dataset/features/CLIP_RN101_49 and no *.npz in /kaggle/temp/open_source_dataset/mscoco_dataset/features
+
+cell 3
+/kaggle/working/xmodaler
+Traceback (most recent call last):
+  File "/kaggle/working/xmodaler/train_net.py", line 14, in <module>
+    from xmodaler.engine import DefaultTrainer, default_argument_parser, default_setup, hooks, launch, build_engine
+  File "/kaggle/working/xmodaler/xmodaler/engine/__init__.py", line 12, in <module>
+    from .defaults import *
+  File "/kaggle/working/xmodaler/xmodaler/engine/defaults.py", line 32, in <module>
+    from xmodaler.modeling import build_model
+  File "/kaggle/working/xmodaler/xmodaler/modeling/__init__.py", line 8, in <module>
+    from .meta_arch import(
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/__init__.py", line 9, in <module>
+    from .transformer_enc_dec import TransformerEncoderDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/transformer_enc_dec.py", line 15, in <module>
+    from .base_enc_dec import BaseEncoderDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/base_enc_dec.py", line 23, in <module>
+    from ..decode_strategy import build_beam_searcher, build_greedy_decoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/__init__.py", line 7, in <module>
+    from .greedy_decoder import GreedyDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/greedy_decoder.py", line 12, in <module>
+    from .decode_strategy import DecodeStrategy
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/decode_strategy.py", line 12, in <module>
+    from xmodaler.tokenization import BertTokenizer
+  File "/kaggle/working/xmodaler/xmodaler/tokenization/__init__.py", line 1, in <module>
+    from .tokenization_bert import BertTokenizer
+  File "/kaggle/working/xmodaler/xmodaler/tokenization/tokenization_bert.py", line 25, in <module>
+    from pytorch_transformers.tokenization_utils import PreTrainedTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/__init__.py", line 2, in <module>
+    from .tokenization_auto import AutoTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/tokenization_auto.py", line 26, in <module>
+    from .tokenization_xlm import XLMTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/tokenization_xlm.py", line 27, in <module>
+    import sacremoses as sm
+ModuleNotFoundError: No module named 'sacremoses'
+
+cell 4
+Traceback (most recent call last):
+  File "/kaggle/working/xmodaler/train_net.py", line 14, in <module>
+    from xmodaler.engine import DefaultTrainer, default_argument_parser, default_setup, hooks, launch, build_engine
+  File "/kaggle/working/xmodaler/xmodaler/engine/__init__.py", line 12, in <module>
+    from .defaults import *
+  File "/kaggle/working/xmodaler/xmodaler/engine/defaults.py", line 32, in <module>
+    from xmodaler.modeling import build_model
+  File "/kaggle/working/xmodaler/xmodaler/modeling/__init__.py", line 8, in <module>
+    from .meta_arch import(
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/__init__.py", line 9, in <module>
+    from .transformer_enc_dec import TransformerEncoderDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/transformer_enc_dec.py", line 15, in <module>
+    from .base_enc_dec import BaseEncoderDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/meta_arch/base_enc_dec.py", line 23, in <module>
+    from ..decode_strategy import build_beam_searcher, build_greedy_decoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/__init__.py", line 7, in <module>
+    from .greedy_decoder import GreedyDecoder
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/greedy_decoder.py", line 12, in <module>
+    from .decode_strategy import DecodeStrategy
+  File "/kaggle/working/xmodaler/xmodaler/modeling/decode_strategy/decode_strategy.py", line 12, in <module>
+    from xmodaler.tokenization import BertTokenizer
+  File "/kaggle/working/xmodaler/xmodaler/tokenization/__init__.py", line 1, in <module>
+    from .tokenization_bert import BertTokenizer
+  File "/kaggle/working/xmodaler/xmodaler/tokenization/tokenization_bert.py", line 25, in <module>
+    from pytorch_transformers.tokenization_utils import PreTrainedTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/__init__.py", line 2, in <module>
+    from .tokenization_auto import AutoTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/tokenization_auto.py", line 26, in <module>
+    from .tokenization_xlm import XLMTokenizer
+  File "/usr/local/lib/python3.12/dist-packages/pytorch_transformers/tokenization_xlm.py", line 27, in <module>
+    import sacremoses as sm
+ModuleNotFoundError: No module named 'sacremoses'

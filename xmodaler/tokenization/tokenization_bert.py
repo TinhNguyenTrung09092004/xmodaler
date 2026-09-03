@@ -22,9 +22,30 @@ import os
 import unicodedata
 from io import open
 
-from pytorch_transformers.tokenization_utils import PreTrainedTokenizer
-
 logger = logging.getLogger(__name__)
+
+try:
+    from pytorch_transformers.tokenization_utils import PreTrainedTokenizer
+except ImportError as _err:
+    # pytorch_transformers' __init__ pulls in sacremoses/sentencepiece/boto3 and the
+    # whole legacy model zoo. Configs that set INFERENCE.VOCAB to a plain vocabulary
+    # file (COS-Net does) never build a BertTokenizer, so degrade instead of blocking
+    # the import of xmodaler.modeling.
+    _import_error = _err
+
+    class PreTrainedTokenizer(object):
+        _MSG = (
+            "BertTokenizer requires pytorch_transformers: %s. Install it with "
+            "`pip install pytorch_transformers sacremoses sentencepiece`, or set "
+            "INFERENCE.VOCAB to a vocabulary file path."
+        )
+
+        def __init__(self, *args, **kwargs):
+            raise ImportError(self._MSG % _import_error)
+
+        @classmethod
+        def from_pretrained(cls, *args, **kwargs):
+            raise ImportError(cls._MSG % _import_error)
 
 VOCAB_FILES_NAMES = {'vocab_file': 'vocab.txt'}
 

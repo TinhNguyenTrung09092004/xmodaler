@@ -1,13 +1,10 @@
 """
 Keep only the N newest epoch checkpoints in OUTPUT_DIR.
 
-The trainer saves one checkpoint per epoch and never deletes any
-(hooks.PeriodicCheckpointer is built without max_to_keep), which overruns the
-20GB /kaggle/working output cap well before epoch 35. Run this from a second
-notebook cell while training is going, or between sessions.
+The trainer saves one per epoch and never deletes any (hooks.PeriodicCheckpointer is
+built without max_to_keep), which overruns the 20GB /kaggle/working cap before epoch 35.
 
     python kaggle/prune_ckpt.py --keep 2
-    watch: while true; do python kaggle/prune_ckpt.py --keep 2; sleep 900; done
 """
 import argparse
 import os
@@ -31,9 +28,8 @@ def main():
             ckpts.append((int(m.group(2)), path))
     ckpts.sort()
 
-    # never touch the file fvcore resumes from
-    last = os.path.join(args.output_dir, "last_checkpoint")
     protected = set()
+    last = os.path.join(args.output_dir, "last_checkpoint")
     if os.path.exists(last):
         with open(last) as f:
             protected.add(os.path.join(args.output_dir, f.read().strip()))

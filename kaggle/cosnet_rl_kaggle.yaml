@@ -1,13 +1,10 @@
 _BASE_: "cosnet_kaggle.yaml"
 
-# Self-critical (CIDEr) stage. Requires:
-#   - a finished XE checkpoint in MODEL.WEIGHTS
-#   - mscoco_train_gts.pkl / mscoco_train_cider.pkl (kaggle/prepare_data.py --build-cider)
+# Self-critical stage. Needs a finished XE checkpoint at MODEL.WEIGHTS and the cider
+# cache from `python kaggle/prepare_data.py --build-cider`.
 
 ###################################### DATALOADER ######################################
 DATALOADER:
-  # original RL config: 4 GPUs x 16. 2 GPUs x 32 keeps the same global batch, but each
-  # step also runs beam-free sampling, so drop to 16 if this OOMs on a 16GB T4.
   TRAIN_BATCH_SIZE: 32
 
 ######################################### Engine #########################################
