@@ -12,9 +12,8 @@ DATALOADER:
   ANNO_FOLDER:  '/kaggle/temp/open_source_dataset/mscoco_dataset'
 
 SOLVER:
-  CHECKPOINT_PERIOD: 1
-  EVAL_PERIOD: 1
-  WRITE_PERIOD: 50
+  EPOCH: 1
+  WRITE_PERIOD: 500
 
 SCORER:
   GT_PATH: '/kaggle/temp/open_source_dataset/mscoco_dataset/mscoco_train_gts.pkl'
@@ -24,5 +23,3 @@ INFERENCE:
   VOCAB: '/kaggle/temp/open_source_dataset/mscoco_dataset/vocabulary.txt'
   VAL_ANNFILE: '/kaggle/temp/open_source_dataset/mscoco_dataset/captions_val5k.json'
   TEST_ANNFILE: '/kaggle/temp/open_source_dataset/mscoco_dataset/captions_test5k.json'
-  VAL_EVAL_START: -1
-  TEST_EVAL_START: 29
