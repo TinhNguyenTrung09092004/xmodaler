@@ -12,7 +12,7 @@ DATALOADER:
   ANNO_FOLDER:  '/kaggle/temp/open_source_dataset/mscoco_dataset'
 
 SOLVER:
-  EPOCH: 1
+  EPOCH: 7
   WRITE_PERIOD: 500
 
 SCORER:
@@ -23,3 +23,9 @@ INFERENCE:
   VOCAB: '/kaggle/temp/open_source_dataset/mscoco_dataset/vocabulary.txt'
   VAL_ANNFILE: '/kaggle/temp/open_source_dataset/mscoco_dataset/captions_val5k.json'
   TEST_ANNFILE: '/kaggle/temp/open_source_dataset/mscoco_dataset/captions_test5k.json'
+
+DECODE_STRATEGY:
+  BEAM_SIZE: 5
+
+MODEL:
+  MAX_SEQ_LEN: 46
