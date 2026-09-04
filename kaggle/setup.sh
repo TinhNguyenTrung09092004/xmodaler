@@ -12,20 +12,30 @@ pip install -q --no-cache-dir \
     jsonlines \
     json_lines \
     pycocotools \
-    pycocoevalcap
+    pycocoevalcap \
+    install-jdk
 
-if ! command -v java >/dev/null 2>&1; then
-    echo "[WARN] java not found - evaluation will crash."
-    echo "       apt-get -qq update && apt-get -qq install -y default-jre"
-else
-    java -version 2>&1 | head -1
-fi
+python - <<'PY'
+import jdk
+home = jdk.install('11')
+open('/kaggle/working/.java_home', 'w').write(home)
+print("JDK 11:", home)
+PY
+
+source "$(dirname "$0")/java_env.sh"
+java -version 2>&1 | head -1
 
 if ! command -v unzip >/dev/null 2>&1; then
     apt-get -qq update && apt-get -qq install -y unzip
 fi
 
 mkdir -p data/temp
+
+python - <<'PY'
+from pycocoevalcap.spice.spice import Spice
+Spice().compute_score({"0": ["a man riding a horse"]}, {"0": ["a man riding a horse"]})
+print("SPICE OK")
+PY
 
 python - <<'PY'
 import torch

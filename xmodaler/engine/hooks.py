@@ -362,8 +362,10 @@ class EvalHook(HookBase):
         self._func = eval_function
         self._stage = stage
         self._eval_start = eval_start
+        self._last_eval_epoch = -1
 
     def _do_eval(self, epoch):
+        self._last_eval_epoch = epoch
         results = None
         if comm.is_main_process():
             results = self._func(epoch)
@@ -406,8 +408,9 @@ class EvalHook(HookBase):
     def after_train(self):
         next_iter = self.trainer.iter + 1
         epoch = int(next_iter // self.trainer.iters_per_epoch)
-        # This condition is to prevent the eval from running after a failed training
-        if self.trainer.iter + 1 >= self.trainer.max_iter:
+        # This condition is to prevent the eval from running after a failed training,
+        # or a second time when after_step already evaluated this same epoch.
+        if self.trainer.iter + 1 >= self.trainer.max_iter and epoch != self._last_eval_epoch:
             self._do_eval(epoch)
         # func is likely a closure that holds reference to the trainer
         # therefore we clean it to avoid circular reference in the end

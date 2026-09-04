@@ -12,6 +12,6 @@ EVALUATION_REGISTRY.__doc__ = """
 Registry for evaluation
 """
 
-def build_evaluation(cfg, annfile, output_dir):
-    evaluation = EVALUATION_REGISTRY.get(cfg.INFERENCE.NAME)(cfg, annfile, output_dir) if len(cfg.INFERENCE.NAME) > 0 else None
+def build_evaluation(cfg, annfile, output_dir, stage):
+    evaluation = EVALUATION_REGISTRY.get(cfg.INFERENCE.NAME)(cfg, annfile, output_dir, stage) if len(cfg.INFERENCE.NAME) > 0 else None
     return evaluation

@@ -40,9 +40,7 @@ warmup 20000 iter (~5.6 epoch).
 2 GPU x 16 = 32 ảnh/step → iter/epoch và lịch warmup giữ nguyên y hệt bản gốc,
 không cần chỉnh `LR_SCHEDULER.WARMUP`.
 
-## 3. Thời gian
-
-### Nối session
+## 3. Nối session
 
 1. Session đang chạy: **Save Version → Save & Run All** để `/kaggle/working/cosnet_output`
    thành output được lưu.

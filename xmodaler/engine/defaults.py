@@ -256,12 +256,12 @@ class DefaultTrainer(TrainerBase):
             self._train_data_loader_iter = iter(self.train_data_loader)
 
         if self.val_data_loader is not None:
-            self.val_evaluator = build_evaluation(cfg, cfg.INFERENCE.VAL_ANNFILE, None)
+            self.val_evaluator = build_evaluation(cfg, cfg.INFERENCE.VAL_ANNFILE, cfg.OUTPUT_DIR, 'val')
         else:
             self.val_evaluator = None
 
         if self.test_data_loader is not None:
-            self.test_evaluator = build_evaluation(cfg, cfg.INFERENCE.TEST_ANNFILE, cfg.OUTPUT_DIR)
+            self.test_evaluator = build_evaluation(cfg, cfg.INFERENCE.TEST_ANNFILE, cfg.OUTPUT_DIR, 'test')
         else:
             self.test_evaluator = None
 

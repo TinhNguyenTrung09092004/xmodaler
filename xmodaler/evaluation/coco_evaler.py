@@ -19,9 +19,10 @@ from pycocoevalcap.eval import COCOEvalCap
 
 @EVALUATION_REGISTRY.register()
 class COCOEvaler(object):
-    def __init__(self, cfg, annfile, output_dir):
+    def __init__(self, cfg, annfile, output_dir, stage):
         super(COCOEvaler, self).__init__()
         self.coco = COCO(annfile)
+        self.stage = stage
         if not os.path.exists(kfg.TEMP_DIR):
             os.mkdir(kfg.TEMP_DIR)
 
@@ -34,7 +35,8 @@ class COCOEvaler(object):
 
     def eval(self, results, epoch):
         if self.output_dir is not None:
-            json.dump(results, open(os.path.join(self.output_dir, str(epoch) + '.json'), "w"))
+            filename = '{}_{}.json'.format(self.stage, epoch)
+            json.dump(results, open(os.path.join(self.output_dir, filename), "w"))
 
         in_file = tempfile.NamedTemporaryFile(mode='w', delete=False, dir=kfg.TEMP_DIR)
         json.dump(results, in_file)
