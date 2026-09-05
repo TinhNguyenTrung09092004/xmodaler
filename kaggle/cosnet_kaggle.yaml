@@ -9,13 +9,13 @@ OUTPUT_DIR: '/kaggle/working/cosnet_output'
 DATALOADER:
   TRAIN_BATCH_SIZE: 16
   TEST_BATCH_SIZE: 16
-  NUM_WORKERS: 4
+  NUM_WORKERS: 2
   FEATS_FOLDER: '/kaggle/temp/open_source_dataset/mscoco_dataset/features/CLIP_RN101_49'
   ANNO_FOLDER:  '/kaggle/temp/open_source_dataset/mscoco_dataset'
 
 SOLVER:
   EPOCH: 7
-  WRITE_PERIOD: 500
+  WRITE_PERIOD: 1000
 
 SCORER:
   GT_PATH: '/kaggle/temp/open_source_dataset/mscoco_dataset/mscoco_train_gts.pkl'
@@ -30,4 +30,4 @@ DECODE_STRATEGY:
   BEAM_SIZE: 5
 
 MODEL:
-  MAX_SEQ_LEN: 46
+  MAX_SEQ_LEN: 45
