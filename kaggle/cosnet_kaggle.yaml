@@ -2,6 +2,8 @@ _BASE_: "../configs/image_caption/cosnet/cosnet.yaml"
 
 VERSION: 1
 
+SEED: 0
+
 OUTPUT_DIR: '/kaggle/working/cosnet_output'
 
 DATALOADER:
