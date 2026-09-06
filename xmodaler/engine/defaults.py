@@ -469,6 +469,13 @@ class DefaultTrainer(TrainerBase):
         if "rng_states" in state_dict:
             self._load_rng_state(state_dict["rng_states"])
 
+    @staticmethod
+    def _decode_numpy_rng_state(state):
+        kind, keys, pos, has_gauss, cached_gaussian = state
+        if isinstance(keys, torch.Tensor):
+            keys = keys.numpy().astype(np.uint32)
+        return (kind, keys, pos, has_gauss, cached_gaussian)
+
     def _load_rng_state(self, rng_states):
         logger = logging.getLogger(__name__)
         rank = comm.get_rank()
@@ -481,7 +488,7 @@ class DefaultTrainer(TrainerBase):
 
         state = rng_states[rank]
         random.setstate(state["python"])
-        np.random.set_state(state["numpy"])
+        np.random.set_state(self._decode_numpy_rng_state(state["numpy"]))
         torch.set_rng_state(state["torch"])
 
         cuda_states = state.get("torch_cuda", None)

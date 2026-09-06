@@ -503,9 +503,16 @@ class RNGStateCollector(HookBase):
 
     @staticmethod
     def local_state():
+        np_kind, np_keys, np_pos, np_has_gauss, np_gauss = np.random.get_state()
         state = {
             "python": random.getstate(),
-            "numpy": np.random.get_state(),
+            "numpy": (
+                np_kind,
+                torch.from_numpy(np_keys.astype(np.int64)),
+                int(np_pos),
+                int(np_has_gauss),
+                float(np_gauss),
+            ),
             "torch": torch.get_rng_state(),
         }
         if torch.cuda.is_available():
