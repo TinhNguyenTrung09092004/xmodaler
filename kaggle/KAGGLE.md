@@ -26,12 +26,6 @@ Thêm `--build-cider` nếu định chạy RL sau đó.
 !bash kaggle/run_train.sh INFERENCE.VAL_EVAL_START 24 SOLVER.EPOCH 1
 ```
 
-Session sau, checkpoint đã có sẵn trong `/kaggle/working/cosnet_output`:
-
-```python
-!bash kaggle/run_train.sh --resume INFERENCE.VAL_EVAL_START 24
-```
-
 ## 2. Vì sao là 2 GPU x batch 16
 
 `DATALOADER.TRAIN_BATCH_SIZE` là batch **mỗi process** (mỗi GPU). Config gốc: 4 GPU x 8 = 32 ảnh/step, ~3540 iter/epoch, `NoamLR`
@@ -42,19 +36,15 @@ không cần chỉnh `LR_SCHEDULER.WARMUP`.
 
 ## 3. Nối session
 
-1. Session đang chạy: **Save Version → Save & Run All** để `/kaggle/working/cosnet_output`
-   thành output được lưu.
-2. Session mới: Add data → chọn output của notebook trước.
-3. Copy về rồi resume:
-
 ```python
+%cd /kaggle/working/xmodaler
 !mkdir -p /kaggle/working/cosnet_output
-!cp /kaggle/input/<ten-output-truoc>/cosnet_output/last_checkpoint /kaggle/working/cosnet_output/
-!cp /kaggle/input/<ten-output-truoc>/cosnet_output/model_Epoch_*.pth /kaggle/working/cosnet_output/
+!echo "/kaggle/input/<slug>/model_Epoch_00005_Iter_0017699.pth" > /kaggle/working/cosnet_output/last_checkpoint
 !bash kaggle/run_train.sh --resume INFERENCE.VAL_EVAL_START 24
 ```
 
-`last_checkpoint` chỉ chứa basename nên copy sang thư mục khác vẫn resume đúng.
+Kiểm log dòng `Loading checkpoint from ...` để chắc đúng file; iter bắt đầu phải
+bằng số trong tên file + 1.
 
 ## 4. Giai đoạn RL
 
