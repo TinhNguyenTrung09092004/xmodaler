@@ -17,6 +17,7 @@ import argparse
 import logging
 import tqdm
 import os
+import random
 import sys
 import numpy as np
 import weakref
@@ -247,13 +248,10 @@ class DefaultTrainer(TrainerBase):
 
         if isinstance(self.train_data_loader, list):
             self.iters_per_epoch_list = [len(loader) for loader in self.train_data_loader]
-            self._train_data_loader_iter_list = [iter(loader) for loader in self.train_data_loader]
-
             self.iters_per_epoch = len(self.train_data_loader[0])
-            self._train_data_loader_iter = iter(self.train_data_loader[0])
         else:
             self.iters_per_epoch = len(self.train_data_loader)
-            self._train_data_loader_iter = iter(self.train_data_loader)
+        self._build_train_loader_iter()
 
         if self.val_data_loader is not None:
             self.val_evaluator = build_evaluation(cfg, cfg.INFERENCE.VAL_ANNFILE, cfg.OUTPUT_DIR, 'val')
@@ -292,7 +290,21 @@ class DefaultTrainer(TrainerBase):
         self.cfg = cfg
         self.start_iter = 0
         self.max_iter = cfg.SOLVER.EPOCH * self.iters_per_epoch
+        self.rng_states = None
         self.register_hooks(self.build_hooks())
+
+    def _build_train_loader_iter(self, epoch=0):
+        loaders = self.train_data_loader if isinstance(self.train_data_loader, list) \
+            else [self.train_data_loader]
+        if comm.get_world_size() > 1:
+            for loader in loaders:
+                loader.sampler.set_epoch(epoch)
+
+        if isinstance(self.train_data_loader, list):
+            self._train_data_loader_iter_list = [iter(loader) for loader in self.train_data_loader]
+            self._train_data_loader_iter = iter(self.train_data_loader[0])
+        else:
+            self._train_data_loader_iter = iter(self.train_data_loader)
 
     def resume_or_load(self, resume=True):
         self.checkpointer.resume_or_load(self.cfg.MODEL.WEIGHTS, resume=resume)
@@ -302,6 +314,7 @@ class DefaultTrainer(TrainerBase):
             # The checkpoint stores the training iteration that just finished, thus we start
             # at the next iteration
             self.start_iter = self.iter + 1
+            self._build_train_loader_iter(self.start_iter // self.iters_per_epoch)
 
     def build_hooks(self):
         cfg = self.cfg.clone()
@@ -317,7 +330,8 @@ class DefaultTrainer(TrainerBase):
                 inc_prob = cfg.SCHEDULED_SAMPLING.INC_PROB, 
                 max_prob = cfg.SCHEDULED_SAMPLING.MAX_PROB
             ),
-            hooks.ModelWeightsManipulating()
+            hooks.ModelWeightsManipulating(),
+            hooks.RNGStateCollector(cfg.SOLVER.CHECKPOINT_PERIOD * self.iters_per_epoch)
         ]
 
         # Do PreciseBN before checkpointer, because it updates the model and need to
@@ -442,6 +456,8 @@ class DefaultTrainer(TrainerBase):
         ret["scheduler"] = self.scheduler.state_dict()
         if self.ema is not None:
             ret["ema"] = self.ema.state_dict()
+        if self.rng_states is not None:
+            ret["rng_states"] = self.rng_states
         return ret
 
     def load_state_dict(self, state_dict):
@@ -450,6 +466,37 @@ class DefaultTrainer(TrainerBase):
             self.optimizer.load_state_dict(state_dict["optimizer"])
         if "scheduler" in state_dict:
             self.scheduler.load_state_dict(state_dict["scheduler"])
+        if "rng_states" in state_dict:
+            self._load_rng_state(state_dict["rng_states"])
+
+    def _load_rng_state(self, rng_states):
+        logger = logging.getLogger(__name__)
+        rank = comm.get_rank()
+        if rank >= len(rng_states):
+            logger.warning(
+                "Checkpoint holds RNG states for {} ranks but this is rank {}; "
+                "keeping the freshly seeded RNG.".format(len(rng_states), rank)
+            )
+            return
+
+        state = rng_states[rank]
+        random.setstate(state["python"])
+        np.random.set_state(state["numpy"])
+        torch.set_rng_state(state["torch"])
+
+        cuda_states = state.get("torch_cuda", None)
+        if cuda_states is not None and torch.cuda.is_available():
+            if len(cuda_states) == torch.cuda.device_count():
+                torch.cuda.set_rng_state_all(cuda_states)
+            else:
+                logger.warning(
+                    "Checkpoint holds {} CUDA RNG states but {} devices are visible; "
+                    "keeping the freshly seeded CUDA RNG.".format(
+                        len(cuda_states), torch.cuda.device_count()
+                    )
+                )
+        self.rng_states = rng_states
+        logger.info("Restored RNG state for rank {}".format(rank))
 
     def _write_metrics(
         self,

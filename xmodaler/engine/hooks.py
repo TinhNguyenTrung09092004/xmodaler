@@ -9,9 +9,11 @@ import datetime
 import itertools
 import logging
 import os
+import random
 import tempfile
 import time
 from collections import Counter
+import numpy as np
 import torch
 from fvcore.common.param_scheduler import ParamScheduler
 from fvcore.common.timer import Timer
@@ -34,7 +36,8 @@ __all__ = [
     "AutogradProfiler",
     "EvalHook",
     "PreciseBN",
-    "ModelWeightsManipulating"
+    "ModelWeightsManipulating",
+    "RNGStateCollector"
 ]
 
 
@@ -487,3 +490,33 @@ class PreciseBN(HookBase):
                 + "Note that this could produce different statistics every time."
             )
             update_bn_stats(self._model, data_loader(), self._num_iter)
+
+
+class RNGStateCollector(HookBase):
+    """
+    Gathers the python/numpy/torch RNG state of every rank so that the checkpoint
+    written by rank 0 can restore all of them on resume.
+    """
+
+    def __init__(self, period):
+        self._period = period
+
+    @staticmethod
+    def local_state():
+        state = {
+            "python": random.getstate(),
+            "numpy": np.random.get_state(),
+            "torch": torch.get_rng_state(),
+        }
+        if torch.cuda.is_available():
+            state["torch_cuda"] = torch.cuda.get_rng_state_all()
+        return state
+
+    def before_train(self):
+        self.trainer.rng_states = comm.all_gather(self.local_state())
+
+    def after_step(self):
+        next_iter = self.trainer.iter + 1
+        is_final = next_iter >= self.trainer.max_iter
+        if is_final or (self._period > 0 and next_iter % self._period == 0):
+            self.trainer.rng_states = comm.all_gather(self.local_state())
