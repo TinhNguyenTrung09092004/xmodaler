@@ -14,7 +14,6 @@ DATALOADER:
   ANNO_FOLDER:  '/kaggle/temp/open_source_dataset/mscoco_dataset'
 
 SOLVER:
-  EPOCH: 7
   WRITE_PERIOD: 1000
 
 SCORER:
