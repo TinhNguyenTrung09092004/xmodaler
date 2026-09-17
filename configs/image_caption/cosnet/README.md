@@ -22,14 +22,3 @@ Please cite with the following BibTeX:
 4. Feature extraction: https://github.com/jianjieluo/OpenAI-CLIP-Feature
 
 Access code for Baidu is **cosn**
-
-## Training
-### Train COS-Net model
-```
-CUDA_VISIBLE_DEVICES=0,1,2,3 python3 train_net.py --num-gpus 4 --config-file ./configs/image_caption/cosnet/cosnet.yaml
-```
-
-### Train COS-Net model using self critical
-```
-CUDA_VISIBLE_DEVICES=0,1,2,3 python3 train_net.py --num-gpus 4 --config-file ./configs/image_caption/cosnet/cosnet_rl.yaml
-```
