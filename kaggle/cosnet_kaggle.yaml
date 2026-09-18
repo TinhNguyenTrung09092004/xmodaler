@@ -15,6 +15,7 @@ DATALOADER:
 
 SOLVER:
   WRITE_PERIOD: 1000
+  EPOCH: 30
 
 SCORER:
   GT_PATH: '/kaggle/temp/open_source_dataset/mscoco_dataset/mscoco_train_gts.pkl'
