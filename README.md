@@ -9,7 +9,7 @@ meta-architectures and datasets) has been removed.
 
 | Path | What it is |
 | --- | --- |
-| [configs/image_caption/cosnet/README.md](configs/image_caption/cosnet/README.md) | **Upstream COS-Net doc** - paper, BibTeX, download links for the pretrained features/annotations/checkpoints, and the original 4-GPU training commands. |
+| [configs/image_caption/cosnet/README.md](configs/image_caption/cosnet/README.md) | **Upstream COS-Net doc** - paper, BibTeX, download links for the pretrained features/annotations/checkpoints. |
 | [xmodaler/datasets/README.md](xmodaler/datasets/README.md) | **Upstream dataset doc** - expected on-disk layout of `open_source_dataset/mscoco_dataset` and which config keys point at it. |
 | [kaggle/KAGGLE.md](kaggle/KAGGLE.md) | **This fork's Kaggle runbook** - the notebook cells actually used to train and evaluate here, including how to resume across sessions. |
 | [configs/image_caption/cosnet/COS-Net-preprocess/](configs/image_caption/cosnet/COS-Net-preprocess/) | Preprocessing steps (CLIP MIL scores, sentence retrieval, attribute labels) that build the COS-Net annotation `.pkl` files. |
