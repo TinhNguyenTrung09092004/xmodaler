@@ -1,6 +1,10 @@
 # Running COS-Net on Kaggle (GPU T4 x2)
 
-## 1. Notebook cells
+## 1. Add the dataset
+
+**Add Input** -> **Datasets** -> add <https://www.kaggle.com/datasets/nguyntrungtnh/x-modaler-cosnet>.
+
+## 2. Notebook cells
 
 ### Cell 1
 
@@ -24,7 +28,7 @@
 !bash kaggle/run_train.sh
 ```
 
-## 2. Resuming a session
+## 3. Resuming a session
 
 ```python
 %cd /kaggle/working/xmodaler
